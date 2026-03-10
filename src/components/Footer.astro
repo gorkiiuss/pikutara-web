@@ -1,0 +1,132 @@
+---
+---
+
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="brand">
+      <h3>PIKUTARA! GAZTE KONPARTSA</h3>
+      <p>Sestao Astintzen!</p>
+    </div>
+
+    <div class="socials">
+      <a
+        href="https://www.instagram.com/pikutaragztkn?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+        class="social-link brutal-btn">Instagram</a
+      >
+    </div>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-content">
+      <span>EZ DUGU TXARTELARIK ONARTZEN!</span>
+      <span>•</span>
+      <span>ESKU-DIRUA BAKARRIK</span>
+      <span>•</span>
+      <span>AEBren INPERIALISMOA GELDITU!</span>
+      <span>•</span>
+      <span>EZ DUGU TXARTELARIK ONARTZEN!</span>
+      <span>•</span>
+      <span>ESKU-DIRUA BAKARRIK</span>
+      <span>•</span>
+      <span>AEBren INPERIALISMOA GELDITU!</span>
+      <span>•</span>
+      <span>EZ DUGU TXARTELARIK ONARTZEN!</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+
+  .main-footer {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-top: 8px solid var(--accent-red);
+    padding-bottom: 3rem; /* Leave space for the sticky marquee */
+  }
+
+  .footer-content {
+    padding: 4rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+  }
+
+  .brand h3 {
+    font-size: 2.2rem;
+    color: var(--accent-yellow);
+    margin-bottom: 0.5rem;
+  }
+
+  .brand p {
+    font-size: 1.5rem;
+  }
+
+  .socials {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social-link {
+    font-size: 3rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .marquee {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--accent-yellow);
+    color: var(--bg-color);
+    padding: 0.5rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 4px solid var(--bg-color);
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+  }
+
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee-content span {
+    margin: 0 2rem;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      padding: 2rem 1rem;
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+    .brand h3 {
+      font-size: 1.8rem;
+    }
+    .brand p {
+      font-size: 1.2rem;
+    }
+    .social-link {
+      font-size: 1.5rem;
+    }
+    .marquee {
+      font-size: 1.2rem;
+    }
+  }
+</style>

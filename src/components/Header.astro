@@ -1,0 +1,92 @@
+---
+---
+
+<header class="main-header">
+  <div class="logo-wrapper">
+    <img
+      src="/assets/konpartsa_piktograma.svg"
+      alt="Konpartsaren logoa"
+      class="logo-icon"
+    />
+    <div class="logo">PIKUTARA!</div>
+  </div>
+  <nav class="nav-links">
+    <a href="#" class="brutal-btn">Gora ↑</a>
+  </nav>
+</header>
+
+<style>
+  .main-header {
+    background-color: var(--bg-color);
+    border-bottom: var(--brutal-border);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 5vh, 2.5rem);
+    color: var(--text-color);
+    background-color: var(--accent-red);
+    padding: 0 0.5rem;
+    line-height: 1;
+    border: var(--brutal-border);
+    box-shadow: 4px 4px 0px var(--accent-yellow);
+    transform: rotate(-3deg);
+  }
+
+  .logo-icon {
+    height: clamp(3rem, 12vh, 7rem);
+    width: auto;
+    transform: rotate(-10deg);
+  }
+
+  .nav-links a {
+    font-size: clamp(1.2rem, 4vh, 2rem);
+  }
+
+  @media (max-width: 768px) {
+    .main-header {
+      padding: 0.5rem 1rem;
+    }
+    .logo-icon {
+      height: clamp(2.5rem, 10vw, 4rem);
+    }
+    .logo {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+    }
+    .nav-links a {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      padding: 0.3rem 0.8rem;
+    }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .main-header {
+      padding: 0.2rem 1rem;
+    }
+    .logo-icon {
+      height: 2.5rem;
+    }
+    .logo {
+      font-size: 1.2rem;
+    }
+    .nav-links a {
+      font-size: 1rem;
+      padding: 0.2rem 0.5rem;
+    }
+  }
+</style>

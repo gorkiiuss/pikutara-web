@@ -1,0 +1,68 @@
+---
+import ArrazoiKarta from "./ArrazoiKarta.astro";
+
+const reasons = [
+  {
+    title: "AEBko inperialismoari ez!",
+    description:
+      "Txartelarekin ordaintzean, ezinbestean AEBetako enpresa kapitalisten (Visa, Mastercard) makineria inperialista elikatzen dugu.",
+  },
+  {
+    title: "Bankuen lapurretari planto",
+    description:
+      "Bitartekari digitalen bidez, bankuek komisioak kobratzen dituzte transakzio bakoitzean, zurea eta gurea den dirua poltsikoratuz.",
+  },
+  {
+    title: "Kontrol sozialik ez!",
+    description:
+      "Ordainketa digitalek zure mugimendu guztiak erregistratuta uzten dituzte. Defendatu gure pribatutasuna sistemaren zaintzaren aurrean.",
+  },
+  {
+    title: "Herri ekonomiaren alde",
+    description:
+      "Esku-diruak bitartekaririk gabeko truke zuzena bermatzen du. Erabili esku-dirua gure autogestioa eta independentzia indartzeko!",
+  },
+];
+---
+
+<section class="reasons-section">
+  <div class="glitch-wrapper">
+    <h2 class="glitch-text" data-text="ZERGATIK?">ZERGATIK?</h2>
+  </div>
+
+  <div class="reasons-grid">
+    {
+      reasons.map((reason) => (
+        <ArrazoiKarta title={reason.title} description={reason.description} />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .reasons-section {
+    padding: 4rem 2rem 6rem;
+    background-color: var(--accent-purple);
+    border-bottom: var(--brutal-border);
+  }
+
+  .glitch-wrapper {
+    font-size: clamp(3rem, 6vw, 5rem);
+    text-align: center;
+    margin-bottom: 4rem;
+    font-weight: 700;
+  }
+
+  .glitch-text {
+    color: var(--bg-color);
+    text-shadow: 4px 4px 0px var(--text-color);
+  }
+
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+</style>

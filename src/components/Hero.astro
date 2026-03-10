@@ -1,0 +1,164 @@
+---
+---
+
+<section class="hero brutal-section">
+  <div class="hero-bg-graphic"></div>
+  <img
+    src="/assets/donald_aldrebez.svg"
+    alt="Donald Trump"
+    class="donald-hero-graphic"
+  />
+  <div class="hero-content">
+    <div class="glitch-wrapper">
+      <h1 class="glitch-text" data-text="HEMEN EZ DUGU TXARTELARIK ONARTZEN!">
+        HEMEN EZ DUGU TXARTELARIK ONARTZEN!
+      </h1>
+    </div>
+    <p class="hero-subtitle">
+      AEB-ko inperialismoaren aurka eta herriko ekonomia babesteko, eskudiruz
+      ordaindu.
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--accent-purple);
+    color: var(--bg-color);
+    border-bottom: var(--brutal-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-graphic {
+    position: absolute;
+    top: -10%;
+    width: 60%;
+    height: 120%;
+    background-image: url("/assets/txartela.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    opacity: 0.8;
+    transform: rotate(30deg);
+    pointer-events: none;
+    z-index: 0;
+    filter: invert(15%) sepia(85%) saturate(5500%) hue-rotate(270deg)
+      brightness(80%) contrast(120%);
+  }
+
+  .donald-hero-graphic {
+    position: absolute;
+    top: -5%;
+    right: 5%;
+    width: clamp(250px, 35vw, 450px);
+    height: auto;
+    z-index: 5;
+    transform: rotate(-10deg);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: 50vw;
+  }
+
+  .glitch-wrapper,
+  .hero-subtitle {
+    position: relative;
+    text-align: left;
+  }
+
+  .glitch-wrapper {
+    position: relative;
+    font-size: clamp(3rem, 4vw, 6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .glitch-text {
+    color: var(--bg-color);
+    position: relative;
+    text-shadow: 4px 4px 0px var(--accent-yellow),
+      -2px -2px 0px var(--text-color);
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+    max-width: 800px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 1rem 1.5rem;
+    border: var(--brutal-border);
+    box-shadow: 8px 8px 0px var(--accent-yellow);
+    transform: rotate(-2deg);
+  }
+
+  @media (max-width: 992px) {
+    .hero-content {
+      align-items: center;
+      padding-right: 0;
+      text-align: center;
+      margin-top: 0;
+    }
+    .glitch-wrapper,
+    .hero-subtitle {
+      text-align: center;
+    }
+    .donald-hero-graphic {
+      width: clamp(300px, 35vw, 500px);
+      right: -10%;
+      transform: rotate(-10deg);
+      opacity: 0.8;
+    }
+    .hero {
+      padding-top: 5rem; /* Make sure text doesn't overlap header immediately */
+      padding-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .glitch-wrapper {
+      font-size: clamp(1.5rem, 8vw, 3rem);
+    }
+  }
+
+  /* Must come AFTER max-width media queries to ensure it overrides them for short landscape viewing */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+      min-height: 100vh;
+      padding-top: 2rem;
+    }
+    .hero-content {
+      margin-top: 0;
+    }
+    .donald-hero-graphic {
+      width: clamp(200px, 30vw, 350px);
+      right: -5%;
+      top: -10%;
+    }
+    .glitch-wrapper {
+      font-size: clamp(1rem, 6vh, 2rem);
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>

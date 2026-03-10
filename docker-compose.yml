@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  txartelari_ez:
+    build: .
+    container_name: konpartsa_txartel_ez_web
+    restart: unless-stopped
+    ports:
+      # OCI zerbitzarian aske duzun barne-portu bat izan daiteke; 
+      # adibidez, localhost:8080.
+      # Alderantzizko Proxyak (NPM/Caddy) portu horretara apuntatuko du.
+      - "127.0.0.1:4300:80"
+    environment:
+      - NODE_ENV=production

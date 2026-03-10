@@ -1,0 +1,44 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+const { title, description, icon = "!" } = Astro.props;
+
+const randomRotation = Math.floor(Math.random() * 9) - 4;
+---
+
+<article
+  class="reason-card brutal-card"
+  style={`transform: rotate(${randomRotation}deg);`}
+>
+  <h3>{title}</h3>
+  <p>{description}</p>
+</article>
+
+<style>
+  .reason-card {
+    display: flex;
+    flex-direction: column;
+    border-color: var(--text-color);
+    background-color: var(--bg-color);
+    height: 100%;
+  }
+
+  h3 {
+    color: var(--accent-yellow);
+    font-size: clamp(1.4rem, 6vw, 2.5rem);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--text-color);
+    padding-bottom: 0.5rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  p {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+  }
+</style>
