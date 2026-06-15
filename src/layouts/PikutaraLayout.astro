@@ -1,0 +1,652 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Sestaoko Pikutara Gazte Konpartsaren atari nagusia.",
+} = Astro.props;
+
+// Detect active route to style navigation links
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) => {
+  if (path === "/" && currentPath === "/") return true;
+  if (path !== "/" && currentPath.startsWith(path)) return true;
+  return false;
+};
+---
+
+<html lang="eu" class="pikutara-theme">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | Pikutara Konpartsa</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="pik-bg-grid"></div>
+    <div class="pik-radial-glow"></div>
+
+    <header class="pik-header">
+      <div class="pik-header-container">
+        <a href="/" class="pik-logo-link">
+          <img
+            src="/assets/konpartsa_piktograma.svg"
+            alt="Pikutara Logo"
+            class="pik-logo-img"
+          />
+          <span class="pik-logo-text">PIKUTARA</span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Menu ireki/itxi"
+        >
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <nav class="pik-nav" id="pikNav">
+          <ul class="nav-list">
+            <li class="flat-item" data-section="kartelak">
+              <a href="/kartelak" class:list={["nav-item", { active: isActive("/kartelak") }]}>Ekitaldiak</a>
+            </li>
+            <li class="flat-item" data-section="bazkaria">
+              <a href="/bazkaria" class:list={["nav-item", { active: isActive("/bazkaria") }]}>Gazte Eguneko Bazkaria</a>
+            </li>
+            <li class="flat-item" data-section="boikota">
+              <a href="/boikota" class:list={["nav-item nav-badge-brutal", { active: isActive("/boikota") }]}>Txartelari Ez!</a>
+            </li>
+            <li class="flat-item" data-section="musika">
+              <a href="/musika" class:list={["nav-item", { active: isActive("/musika") }]}>Baloratu Musika</a>
+            </li>
+            <li class="flat-item" data-section="memeak">
+              <a href="/memeak" class:list={["nav-item", { active: isActive("/memeak") }]}>Memeak</a>
+            </li>
+
+            <li class="tablet-group pik-dropdown">
+              <button class:list={["dropdown-trigger", { active: isActive("/kartelak") || isActive("/bazkaria") }]}>
+                Pikutara 
+                <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <ul class="dropdown-menu">
+                <li data-section="kartelak">
+                  <a href="/kartelak" class:list={["dropdown-item", { active: isActive("/kartelak") }]}>Ekitaldiak</a>
+                </li>
+                <li data-section="bazkaria">
+                  <a href="/bazkaria" class:list={["dropdown-item", { active: isActive("/bazkaria") }]}>Gazte Eguneko Bazkaria</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="tablet-group pik-dropdown">
+              <button class:list={["dropdown-trigger", { active: isActive("/boikota") || isActive("/musika") || isActive("/memeak") }]}>
+                Txosnak
+                <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <ul class="dropdown-menu">
+                <li data-section="boikota">
+                  <a href="/boikota" class:list={["dropdown-item nav-badge-brutal", { active: isActive("/boikota") }]}>Txartelari Ez!</a>
+                </li>
+                <li data-section="musika">
+                  <a href="/musika" class:list={["dropdown-item", { active: isActive("/musika") }]}>Baloratu Musika</a>
+                </li>
+                <li data-section="memeak">
+                  <a href="/memeak" class:list={["dropdown-item", { active: isActive("/memeak") }]}>Memeak</a>
+                </li>
+              </ul>
+            </li>
+            </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pik-main">
+      <slot />
+    </main>
+
+    <footer class="pik-footer">
+      <div class="pik-footer-container">
+        <div class="footer-left">
+          <img
+            src="/assets/konpartsa_piktograma.svg"
+            alt="Pikutara Logo"
+            class="footer-logo"
+          />
+          <div>
+            <h3>PIKUTARA Gazte Konpartsa</h3>
+            <p class="footer-subtitle">Herria astintzen!</p>
+            <p class="footer-contact">
+              E-posta: <a href="mailto:pikutaragaztekonpartsa@gmail.com"
+                >pikutaragaztekonpartsa@gmail.com</a
+              >
+            </p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Atalak</h4>
+          <ul>
+            <li data-section="bazkaria"><a href="/bazkaria">Gazte Eguneko Bazkaria</a></li>
+            <li data-section="boikota">
+              <a href="/boikota">Txartelari Ez!</a>
+            </li>
+            <li data-section="memeak"><a href="/memeak">Memeak</a></li>
+            <li data-section="musika"><a href="/musika">Musika</a></li>
+            <li data-section="kartelak"><a href="/kartelak">Kartelak</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const pikNav = document.getElementById("pikNav");
+
+      if (menuToggle && pikNav) {
+        menuToggle.addEventListener("click", () => {
+          pikNav.classList.toggle("open");
+          menuToggle.classList.toggle("active");
+        });
+      }
+
+      // Track page view
+      async function trackView() {
+        try {
+          await fetch("/api/views", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ path: window.location.pathname }),
+          });
+        } catch (err) {
+          console.error("Error tracking view:", err);
+        }
+      }
+      trackView();
+
+      // Sections active/inactive state check
+      async function checkSections() {
+        try {
+          const res = await fetch("/api/sections");
+          if (!res.ok) return;
+          const sections = await res.json();
+
+          Object.keys(sections).forEach((key) => {
+            const isActive = sections[key];
+            if (!isActive) {
+              // Hides both the flat link and the dropdown sub-link
+              const elements = document.querySelectorAll(
+                `[data-section="${key}"]`,
+              );
+              elements.forEach((el) => {
+                (el as HTMLElement).style.setProperty('display', 'none', 'important');
+              });
+
+              // Redirect if currently on the inactive section page
+              const currentPath = window.location.pathname.toLowerCase();
+              const path = "/" + key;
+              if (
+                currentPath === path ||
+                currentPath === path + "/" ||
+                currentPath.endsWith(path + "/index.html")
+              ) {
+                window.location.href = "/";
+              }
+            }
+          });
+        } catch (err) {
+          console.error("Error checking active sections:", err);
+        }
+      }
+      checkSections();
+    </script>
+  </body>
+</html>
+
+<style>
+  /* Header Styles */
+  .pik-header {
+    background-color: rgba(12, 2, 12, 0.9);
+    border-bottom: 2px solid var(--pik-red);
+    box-shadow: 0 4px 20px rgba(87, 0, 87, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+
+  .pik-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pik-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: var(--pik-text);
+    transition: transform 0.2s ease;
+  }
+
+  .pik-logo-link:hover {
+    transform: scale(1.03);
+  }
+
+  .pik-logo-img {
+    height: 3.5rem;
+    width: auto;
+  }
+
+  .pik-logo-text {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--pik-red);
+    text-shadow: 2px 2px 0px var(--pik-purple);
+    letter-spacing: 1px;
+  }
+
+  /* Nav menu */
+  .pik-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item {
+    color: var(--pik-text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-item:hover {
+    color: var(--pik-red);
+    border-bottom: 2px solid var(--pik-purple-light);
+  }
+
+  .nav-item.active {
+    color: var(--pik-red);
+    border-bottom: 2px solid var(--pik-red);
+    background-color: rgba(87, 0, 87, 0.25);
+  }
+
+  /* Mini brutal badge for Txartelari Ez campaign link */
+  .nav-badge-brutal {
+    border: 2px solid var(--pik-red);
+    box-shadow: 3px 3px 0 var(--pik-purple);
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    background-color: rgba(255, 0, 0, 0.05);
+  }
+
+  .nav-badge-brutal:hover {
+    box-shadow: 1px 1px 0 var(--pik-purple);
+    transform: translate(2px, 2px);
+    background-color: var(--pik-red);
+    color: #fff !important;
+    border-color: #fff;
+  }
+
+/* ==================================================== */
+  /* RESPONSIVE MENU LOGIC (LAUA VS TALDEKATUA)           */
+  /* ==================================================== */
+
+  /* 1. Ordenagailu pantaila handiak (>1380px) */
+  .tablet-group {
+    display: none;
+  }
+  .flat-item {
+    display: list-item;
+  }
+
+  /* Solo mostrar menú plano en monitores ultrawide (>1600px), el resto del tiempo se verá agrupado en "Pikutara" y "Txosnak" */
+  @media (min-width: 769px) and (max-width: 1600px) {
+    .tablet-group {
+      display: list-item;
+    }
+    .flat-item {
+      display: none !important;
+    }
+  }
+
+  /* 3. Mugikorrak (<768px) -> Ikus beheko @media (max-width: 768px) blokea */
+    
+  /* ==================================================== */
+  /* DROPDOWN MENU STYLES                                 */
+  /* ==================================================== */
+  .pik-dropdown {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    background: transparent;
+    border: none;
+    color: var(--pik-text);
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s ease;
+  }
+
+  .dropdown-trigger:hover,
+  .dropdown-trigger.active {
+    color: var(--pik-red);
+  }
+
+  .dropdown-arrow {
+    transition: transform 0.3s ease;
+    color: rgba(255, 0, 0, 0.5);
+  }
+
+  .pik-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+    color: var(--pik-red);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(15px);
+    background-color: rgba(12, 2, 12, 0.98);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 0.6rem;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(87, 0, 87, 0.5);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    min-width: 230px;
+  }
+
+  .pik-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  .dropdown-item {
+    color: var(--pik-text-muted);
+    text-decoration: none;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: block;
+  }
+
+  .dropdown-item:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: #fff;
+    padding-left: 1.2rem;
+  }
+
+  .dropdown-item.active {
+    background: rgba(87, 0, 87, 0.4);
+    color: var(--pik-red);
+    border-left: 3px solid var(--pik-red);
+  }
+
+
+  /* Mobile menu button */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 101;
+  }
+
+  .menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--pik-text);
+    transition: all 0.3s ease;
+  }
+
+  .menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  /* Background Grid and Glow */
+  .pik-bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(87, 0, 87, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(87, 0, 87, 0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -3;
+    pointer-events: none;
+  }
+
+  .pik-radial-glow {
+    position: fixed;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(
+      circle at 50% 30%,
+      rgba(87, 0, 87, 0.15) 0%,
+      rgba(12, 2, 12, 0) 60%
+    );
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  /* Main container */
+  .pik-main {
+    flex: 1;
+    min-height: calc(100vh - 82px - 250px);
+    position: relative;
+    z-index: 20;
+  }
+
+  /* Footer Styles */
+  .pik-footer {
+    background-color: #050005;
+    border-top: 1px solid rgba(255, 0, 0, 0.2);
+    padding: 3rem 2rem 2rem;
+    color: var(--pik-text-muted);
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .pik-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer-left h3 {
+    color: var(--pik-text);
+    margin-bottom: 0.2rem;
+    font-size: 1.5rem;
+  }
+
+  .footer-subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--pik-text-muted);
+  }
+
+  .footer-contact {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--pik-text-muted);
+  }
+
+  .footer-contact a {
+    color: var(--pik-red);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .footer-contact a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .footer-logo {
+    height: 5rem;
+    width: auto;
+  }
+
+  .footer-links h4 {
+    color: var(--pik-text);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    color: var(--pik-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--pik-red);
+  }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(87, 0, 87, 0.3);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+
+  /* Responsive Design - MOBILE MENU */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: flex;
+    }
+
+    /* Mugikorrean berriro dena lauan erakutsiko dugu (hanburgesa barruan) */
+    .tablet-group {
+      display: none !important;
+    }
+    .flat-item {
+      display: list-item !important;
+      width: 100%;
+      text-align: center;
+    }
+
+    .pik-nav {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background-color: rgba(12, 2, 12, 0.98);
+      border-bottom: 2px solid var(--pik-red);
+      flex-direction: column;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+    }
+
+    .pik-nav.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .nav-list {
+      flex-direction: column;
+      width: 100%;
+      gap: 1.5rem;
+      align-items: center; /* Zentroan mantentzeko */
+    }
+
+    .nav-item {
+      display: inline-block; /* Hau "block" zen, baina "inline-block" hobeto geratzen da zentratzeko */
+      font-size: 1.3rem;
+      width: 100%;
+    }
+
+    .pik-footer-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .footer-left {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

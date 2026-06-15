@@ -1,4 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@font-face {
+  font-family: 'Anton';
+  src: url('/fonts/Anton.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'DaxlinePro';
+  src: url('/fonts/DaxlinePro-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DaxlinePro';
+  src: url('/fonts/DaxlinePro-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DaxlinePro';
+  src: url('/fonts/DaxlinePro-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DaxlinePro';
+  src: url('/fonts/DaxlinePro-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* Brutalist Color Palette */
@@ -17,6 +59,19 @@
   /* Typography */
   --font-heading: 'Anton', sans-serif;
   --font-body: 'Space Mono', monospace;
+
+  /* Pikutara Cohesive Theme Variables */
+  --pik-bg: #3b003b;
+  --pik-card-bg: #570057;
+  --pik-purple: #700070;
+  --pik-purple-light: #9c009c;
+  --pik-purple-glow: rgba(156, 0, 156, 0.6);
+  --pik-red: #ff0000;
+  --pik-red-dark: #b30000;
+  --pik-red-glow: rgba(255, 0, 0, 0.4);
+  --pik-text: #ffffff;
+  --pik-text-muted: #f7e6f7;
+  --pik-font: 'DaxlinePro', 'Space Grotesk', sans-serif;
 }
 
 * {
@@ -124,4 +179,157 @@ h6 {
 
 .brutal-card:hover {
   transform: translateY(-5px);
+}
+
+/* Pikutara Theme Styling */
+.pikutara-theme {
+  background-color: var(--pik-bg);
+  color: var(--pik-text);
+  font-family: var(--pik-font);
+  min-height: 100vh;
+}
+
+.pikutara-theme body {
+  background-color: transparent;
+}
+
+.pikutara-theme h1,
+.pikutara-theme h2,
+.pikutara-theme h3,
+.pikutara-theme h4,
+.pikutara-theme h5,
+.pikutara-theme h6 {
+  font-family: var(--pik-font);
+  font-weight: 800;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Beautiful Premium Card Design */
+.pik-card {
+  background-color: var(--pik-card-bg);
+  border: 1px solid rgba(255, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(87, 0, 87, 0.2);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+
+.pik-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--pik-purple), var(--pik-red));
+  opacity: 0.8;
+}
+
+.pik-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--pik-red);
+  box-shadow: 0 12px 40px 0 rgba(255, 0, 0, 0.15), 0 0 15px rgba(87, 0, 87, 0.3);
+}
+
+/* Slick Custom Inputs */
+.pik-input {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background-color: rgba(12, 2, 12, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 8px;
+  color: var(--pik-text);
+  font-family: var(--pik-font);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.pik-input:focus {
+  border-color: var(--pik-red);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2), 0 0 5px var(--pik-purple);
+}
+
+/* Premium Button style */
+.pik-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--pik-font);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, var(--pik-purple) 0%, var(--pik-red) 100%);
+  color: var(--pik-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(87, 0, 87, 0.4);
+}
+
+.pik-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+  background: linear-gradient(135deg, var(--pik-purple-light) 0%, var(--pik-red) 100%);
+}
+
+.pik-btn:active {
+  transform: translateY(0);
+}
+
+/* Custom Tentacle Positioning Classes */
+.tentacle-container {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Helper styles for layouts */
+.pik-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media print {
+  /* Hide interactive/scrolling components */
+  .nav-links,
+  .marquee {
+    display: none !important;
+  }
+  
+  /* Reset layout constraints for printing */
+  body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .main-header {
+    position: relative !important;
+    top: auto !important;
+  }
+
+  /* Prevent awkward page-break cut-offs */
+  .reason-card,
+  .foot-card,
+  .main-header,
+  h1, h2, h3, h4, h5, h6 {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
 }

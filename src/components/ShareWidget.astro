@@ -1,0 +1,414 @@
+---
+// ShareWidget.astro - A simplified premium sharing widget optimized for desktop and mobile.
+// Multi-instance safe.
+---
+
+<div class="share-widget-container">
+  <div class="share-options-grid">
+    <!-- WhatsApp -->
+    <button class="share-btn whatsapp-btn" title="Partekatu WhatsApp bidez">
+      <div class="share-icon-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.488 1.45 5.41 1.451 5.464 0 9.909-4.446 9.912-9.91.002-2.647-1.03-5.136-2.902-7.01C17.195 1.809 14.7 .777 12.008.777c-5.468 0-9.913 4.447-9.917 9.913-.001 1.865.487 3.685 1.414 5.292l-.982 3.585 3.674-.963zm10.743-5.26c-.295-.148-1.748-.862-2.019-.96-.272-.099-.47-.148-.669.149-.198.297-.768.96-.941 1.158-.173.199-.347.223-.642.075-.295-.148-1.246-.459-2.373-1.464-.877-.782-1.47-1.747-1.642-2.044-.173-.297-.018-.458.13-.606.134-.133.295-.347.443-.521.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.011c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.748-.714 1.995-1.402.247-.688.247-1.277.173-1.402-.073-.124-.271-.198-.567-.347z"
+          ></path>
+        </svg>
+      </div>
+      <span class="btn-label">WhatsApp</span>
+    </button>
+
+    <!-- Kopiatu (Copy Link) -->
+    <button class="share-btn copy-btn" title="Kopiatu esteka">
+      <div class="share-icon-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="copy-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          ></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          ></path>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="check-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="display: none;"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="btn-label copy-label-text">Kopiatu</span>
+    </button>
+
+    <!-- Native Share (Hidden if not supported, e.g. on Desktop, shown on mobile) -->
+    <button
+      class="share-btn native-btn"
+      style="display: none;"
+      title="Partekatu mugikorrarekin"
+    >
+      <div class="share-icon-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </div>
+      <span class="btn-label">Partekatu</span>
+    </button>
+  </div>
+
+  <!-- Dynamically injected notification toast inside each widget -->
+  <div class="share-toast-notification share-toast-notification-el">
+    <span class="toast-icon">⚡</span>
+    <span class="toast-message share-toast-message-el">Esteka kopiatu da!</span>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const widgets = document.querySelectorAll(".share-widget-container");
+
+    const shareUrl = window.location.href;
+    const shareTitle = "Gazte Eguneko Bazkaria 🍽️";
+    const shareText =
+      "Aupa! Gazte Eguneko bazkarirako izen-ematea zabalik dago jada. Apuntatu zaitez lehenbailehen esteka honetan! 👇\n";
+
+    widgets.forEach((widget) => {
+      const whatsAppBtn = widget.querySelector(".whatsapp-btn");
+      const copyBtn = widget.querySelector(".copy-btn");
+      const nativeBtn = widget.querySelector(".native-btn") as HTMLElement;
+
+      const copyIcon = widget.querySelector(".copy-icon") as HTMLElement;
+      const checkIcon = widget.querySelector(".check-icon") as HTMLElement;
+      const copyLabelText = widget.querySelector(".copy-label-text");
+
+      const toast = widget.querySelector(".share-toast-notification-el");
+      const toastMessage = widget.querySelector(".share-toast-message-el");
+
+      // Show native share button if supported
+      if ("share" in navigator && nativeBtn) {
+        nativeBtn.style.display = "flex";
+      }
+
+      // Toast show helper
+      const showToast = (message: string) => {
+        if (toast && toastMessage) {
+          document.body.appendChild(toast);
+          toastMessage.textContent = message;
+          toast.classList.add("show");
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+        }
+      };
+
+      // Copy to clipboard helper
+      const copyToClipboard = async (): Promise<boolean> => {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          return true;
+        } catch (err) {
+          try {
+            const PinText = document.createElement("textarea");
+            PinText.value = shareUrl;
+            PinText.style.position = "fixed";
+            document.body.appendChild(PinText);
+            PinText.focus();
+            PinText.select();
+            const successful = document.execCommand("copy");
+            document.body.removeChild(PinText);
+            return successful;
+          } catch (e) {
+            console.error("Errorea kopiatzean:", e);
+            return false;
+          }
+        }
+      };
+
+      // WhatsApp Action
+      if (whatsAppBtn) {
+        whatsAppBtn.addEventListener("click", () => {
+          const fullMessage = `${shareText}${shareUrl}`;
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent,
+          );
+          const baseUrl = isMobile
+            ? "whatsapp://send"
+            : "https://api.whatsapp.com/send";
+          const url = `${baseUrl}?text=${encodeURIComponent(fullMessage)}`;
+          window.open(url, "_blank");
+        });
+      }
+
+      // Copy Action with visual micro-animation
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+          const success = await copyToClipboard();
+          if (success) {
+            showToast("Esteka kopiatu da! 🔗");
+
+            if (copyIcon && checkIcon && copyLabelText) {
+              copyIcon.style.display = "none";
+              checkIcon.style.display = "block";
+              copyLabelText.textContent = "Kopiatuta!";
+              copyBtn.classList.add("copied");
+
+              setTimeout(() => {
+                copyIcon.style.display = "block";
+                checkIcon.style.display = "none";
+                copyLabelText.textContent = "Kopiatu";
+                copyBtn.classList.remove("copied");
+              }, 2000);
+            }
+          } else {
+            showToast("Ezin izan da kopiatu. Saiatu eskuz.");
+          }
+        });
+      }
+
+      // Native Share Action
+      if (nativeBtn) {
+        nativeBtn.addEventListener("click", async () => {
+          try {
+            await navigator.share({
+              title: shareTitle,
+              text: "Eman izena Gazte Eguneko bazkarian! Herri bazkarirako sarrerak salgai.",
+              url: shareUrl,
+            });
+          } catch (err: any) {
+            if (err.name !== "AbortError") {
+              console.error("Errorea partekatzean:", err);
+              const copied = await copyToClipboard();
+              if (copied) showToast("Esteka kopiatuta!");
+            }
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .share-widget-container {
+    width: 100%;
+  }
+
+  .share-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  /* When native share is active on mobile, it gets 3 columns */
+  .share-options-grid:has(.native-btn[style*="display: flex"]),
+  .share-options-grid:has(.native-btn:not([style*="display: none"])) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Responsive layouts for small devices */
+  @media (max-width: 380px) {
+    .share-options-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.6rem;
+    }
+    .share-options-grid .native-btn {
+      grid-column: span 2;
+    }
+  }
+
+  /* Sharing Button Styles */
+  .share-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(12, 2, 12, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.75rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: var(--pik-text-muted);
+    outline: none;
+    user-select: none;
+  }
+
+  .share-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #fff;
+    padding: 10px;
+  }
+
+  .share-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: var(--pik-font);
+    transition: color 0.3s ease;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* Button Actions & Glow Styles */
+  .share-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* WhatsApp Green Glow */
+  .whatsapp-btn:hover {
+    border-color: #25d366;
+    background: rgba(37, 211, 102, 0.05);
+    box-shadow: 0 0 15px rgba(37, 211, 102, 0.25);
+  }
+  .whatsapp-btn:hover .share-icon-wrapper {
+    background: #25d366;
+    color: #000;
+    box-shadow: 0 0 10px rgba(37, 211, 102, 0.5);
+  }
+  .whatsapp-btn:hover .share-icon-wrapper svg {
+    transform: scale(1.1) rotate(5deg);
+  }
+  .whatsapp-btn:hover .btn-label {
+    color: #25d366;
+  }
+
+  /* Copy Link Neon Yellow Glow */
+  .copy-btn:hover {
+    border-color: #ffff00;
+    background: rgba(255, 255, 0, 0.05);
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.25);
+  }
+  .copy-btn:hover .share-icon-wrapper {
+    background: #ffff00;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+  }
+  .copy-btn:hover .share-icon-wrapper svg {
+    transform: scale(1.1);
+  }
+  .copy-btn:hover .btn-label {
+    color: #ffff00;
+  }
+
+  /* Copy Success State */
+  .copy-btn.copied {
+    border-color: #00ffcc;
+    background: rgba(0, 255, 204, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+  }
+  .copy-btn.copied .share-icon-wrapper {
+    background: #00ffcc;
+    color: #000;
+  }
+  .copy-btn.copied .btn-label {
+    color: #00ffcc;
+  }
+
+  /* Native Share Purple Glow */
+  .native-btn:hover {
+    border-color: #9c009c;
+    background: rgba(156, 0, 156, 0.05);
+    box-shadow: 0 0 15px rgba(156, 0, 156, 0.25);
+  }
+  .native-btn:hover .share-icon-wrapper {
+    background: #9c009c;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(156, 0, 156, 0.5);
+  }
+  .native-btn:hover .share-icon-wrapper svg {
+    transform: scale(1.1);
+  }
+  .native-btn:hover .btn-label {
+    color: #9c009c;
+  }
+
+  /* Floating Toast Notification */
+  .share-toast-notification {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background-color: #0c020c;
+    border: 2px solid #00ffcc;
+    box-shadow:
+      0 0 20px rgba(0, 255, 204, 0.25),
+      0 5px 25px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-family: var(--pik-font);
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 2000;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition:
+      transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .share-toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  .toast-icon {
+    color: #00ffcc;
+    font-size: 1.1rem;
+    animation: rotatePulse 1.5s infinite;
+  }
+
+  @keyframes rotatePulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+</style>

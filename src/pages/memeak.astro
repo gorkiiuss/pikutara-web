@@ -1,0 +1,547 @@
+---
+import PikutaraLayout from "../layouts/PikutaraLayout.astro";
+---
+
+<PikutaraLayout
+  title="Memeak"
+  description="Pikutara Gazte Konpartsaren meme-tegi herrikoia. Bidali zure memea eta parte hartu lehiaketan."
+>
+  <div class="pik-container page-layout">
+    <!-- Header info -->
+    <div class="page-header">
+      <h1>MEME GALERIA</h1>
+      <p class="subtitle">
+        Herri umore eta autogestio grafikoa. Igo zure memea eta bozkatu
+        gogokoenak!
+      </p>
+    </div>
+
+    <!-- Layout Grid: Form on left, Meme list on right -->
+    <div class="meme-portal-grid">
+      <!-- Submission Form -->
+      <aside class="upload-sidebar">
+        <div class="pik-card upload-card">
+          <h3>Bidali Zure Memea</h3>
+          <p class="form-desc">
+            Inperialismoaren, kapitalismoaren edo faxismoaren aurkako umorea
+            bultzatu. Igotako memeekin lehiaketa bat antolatuko dugu!
+          </p>
+
+          <form id="memeForm" class="meme-form">
+            <div class="form-group">
+              <label for="memeTitle">Memearen Izenburua</label>
+              <input
+                type="text"
+                id="memeTitle"
+                class="pik-input"
+                placeholder="Adib: Bankariak urduri"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="memeContact"
+                >Zure Kontaktua (Instagram, e-posta...)</label
+              >
+              <input
+                type="text"
+                id="memeContact"
+                class="pik-input"
+                placeholder="Adib: @zure_erabiltzailea edo emaila"
+                required
+              />
+              <p class="input-note">
+                Kontaktua lehiaketarako gordeko dugu eta ez da publikoki
+                erakutsiko.
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label for="memeFile" class="file-upload-label">
+                <span class="upload-icon">📷</span>
+                <span id="fileName">Aukeratu irudia (PNG, JPG)</span>
+              </label>
+              <input
+                type="file"
+                id="memeFile"
+                accept="image/png, image/jpeg, image/jpg"
+                style="display: none;"
+                required
+              />
+            </div>
+
+            <button type="submit" class="pik-btn form-btn">Bidali Memea</button>
+          </form>
+
+          <!-- Success Alert -->
+          <div id="successMessage" class="success-alert" style="display: none;">
+            <div class="alert-icon">✊</div>
+            <div class="alert-body">
+              <h4>Memea bidalita!</h4>
+              <p>
+                Konpartsako fidagarri batek onartzen duenean agertuko da
+                galerian. Mila esker eta zorte on lehiaketan!
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Gallery content -->
+      <section class="gallery-content">
+        <!-- Meme Grid -->
+        <div class="meme-grid" id="memeGrid">
+          <!-- Dynamically populated by JS from the API -->
+        </div>
+      </section>
+    </div>
+  </div>
+</PikutaraLayout>
+
+<script>
+  const API_BASE = "/api/memes";
+  const memeGrid = document.getElementById("memeGrid");
+
+  // Read voted IDs from localStorage on startup
+  const votedIds = new Set(
+    JSON.parse(localStorage.getItem("pikutara_voted_memes") || "[]").map(
+      String,
+    ),
+  );
+
+  async function fetchMemes() {
+    try {
+      const res = await fetch(API_BASE);
+      if (!res.ok) throw new Error("API error");
+      const memes = await res.json();
+
+      if (!memeGrid) return;
+      memeGrid.innerHTML = "";
+
+      if (memes.length === 0) {
+        memeGrid.innerHTML =
+          '<p style="color: var(--pik-text-muted);">Oraindik ez dago memerik. Izan lehena!</p>';
+        return;
+      }
+
+      memes.forEach((meme: any) => {
+        const card = document.createElement("div");
+        card.className = "pik-card meme-card";
+        card.setAttribute("data-id", meme.id);
+
+        const dateStr = new Date(meme.created_at).toLocaleDateString("eu-ES");
+        const imgUrl = "" + meme.image_path;
+        const isVoted = votedIds.has(String(meme.id));
+
+        card.innerHTML = `
+          <div class="meme-img-container">
+            <img src="${imgUrl}" alt="${meme.title}" class="meme-image" />
+            <div class="meme-watermark">PIKUTARA MEME</div>
+          </div>
+          <div class="meme-info">
+            <h4>${meme.title}</h4>
+            <div class="meme-meta">
+              <div class="meme-details-row">
+                <span class="meme-date">${dateStr}</span>
+              </div>
+              <button class="vote-btn ${isVoted ? "voted" : ""}" data-id="${meme.id}" aria-label="Bozkatu meme hau">
+                <span class="heart-icon">❤️</span>
+                <span class="vote-count">${meme.votes}</span>
+              </button>
+            </div>
+          </div>
+        `;
+        memeGrid.appendChild(card);
+      });
+
+      attachVoteListeners();
+    } catch (e) {
+      console.error("Error fetching memes:", e);
+      if (memeGrid)
+        memeGrid.innerHTML =
+          '<p style="color:var(--pik-red);">Errorea memeak kargatzean. Zerbitzaria piztuta al dago?</p>';
+    }
+  }
+
+  function attachVoteListeners() {
+    const voteBtns = document.querySelectorAll(".vote-btn");
+    voteBtns.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-id");
+        if (!id) return;
+
+        const isAlreadyVoted = votedIds.has(String(id));
+        const endpoint = isAlreadyVoted
+          ? `${API_BASE}/${id}/unvote`
+          : `${API_BASE}/${id}/vote`;
+
+        try {
+          const res = await fetch(endpoint, { method: "POST" });
+          if (res.ok) {
+            const countSpan = btn.querySelector(".vote-count");
+            if (isAlreadyVoted) {
+              votedIds.delete(String(id));
+              btn.classList.remove("voted");
+              if (countSpan) {
+                countSpan.textContent = String(
+                  Math.max(0, Number(countSpan.textContent) - 1),
+                );
+              }
+            } else {
+              votedIds.add(String(id));
+              btn.classList.add("voted");
+              if (countSpan) {
+                countSpan.textContent = String(
+                  Number(countSpan.textContent) + 1,
+                );
+              }
+            }
+            localStorage.setItem(
+              "pikutara_voted_memes",
+              JSON.stringify(Array.from(votedIds)),
+            );
+          }
+        } catch (e) {
+          console.error("Error toggling vote:", e);
+        }
+      });
+    });
+  }
+
+  // Initial load
+  fetchMemes();
+
+  // File Upload label update
+  const fileInput = document.getElementById("memeFile") as HTMLInputElement;
+  const fileNameSpan = document.getElementById("fileName");
+  if (fileInput && fileNameSpan) {
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        fileNameSpan.textContent = fileInput.files[0].name;
+        fileNameSpan.style.color = "var(--pik-red)";
+      }
+    });
+  }
+
+  // Form submission via API
+  const memeForm = document.getElementById("memeForm") as HTMLFormElement;
+  const successMessage = document.getElementById("successMessage");
+
+  if (memeForm && successMessage) {
+    memeForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const titleInput = document.getElementById(
+        "memeTitle",
+      ) as HTMLInputElement;
+      const contactInput = document.getElementById(
+        "memeContact",
+      ) as HTMLInputElement;
+
+      if (!fileInput.files || fileInput.files.length === 0) return;
+
+      const formData = new FormData();
+      formData.append("memeTitle", titleInput.value);
+      formData.append("memeContact", contactInput.value);
+      formData.append("memeFile", fileInput.files[0]);
+
+      try {
+        const res = await fetch(API_BASE, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (res.ok) {
+          memeForm.style.display = "none";
+          successMessage.style.display = "block";
+          if (fileNameSpan) {
+            fileNameSpan.textContent = "Aukeratu irudia (PNG, JPG)";
+            fileNameSpan.style.color = "inherit";
+          }
+        } else {
+          const data = await res.json();
+          alert(data.error || "Errorea memea igotzean.");
+        }
+      } catch (err) {
+        alert("Ezin izan da zerbitzariarekin konektatu.");
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  .page-layout {
+    padding: 4rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px var(--pik-purple-glow);
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--pik-text-muted);
+  }
+
+  .meme-portal-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* Sidebar styling */
+  .upload-sidebar {
+    position: sticky;
+    top: 100px;
+  }
+
+  .upload-card {
+    border-color: rgba(255, 0, 0, 0.3);
+  }
+
+  .upload-card h3 {
+    font-size: 1.6rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-desc {
+    font-size: 0.95rem;
+    color: var(--pik-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .meme-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--pik-text);
+  }
+
+  .input-note {
+    font-size: 0.8rem;
+    color: var(--pik-text-muted);
+    font-style: italic;
+  }
+
+  .file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: 2px dashed rgba(255, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: rgba(12, 2, 12, 0.5);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .file-upload-label:hover {
+    border-color: var(--pik-red);
+    background-color: rgba(87, 0, 87, 0.2);
+  }
+
+  .upload-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* Success Alert */
+  .success-alert {
+    padding: 1.5rem;
+    background-color: rgba(87, 0, 87, 0.2);
+    border: 1px solid var(--pik-red);
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .alert-icon {
+    font-size: 2rem;
+  }
+
+  .alert-body h4 {
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .alert-body p {
+    font-size: 0.9rem;
+    color: var(--pik-text-muted);
+    line-height: 1.4;
+  }
+
+  /* Meme Grid */
+  .meme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .meme-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .meme-img-container {
+    width: 100%;
+    height: 250px;
+    background-color: #120212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.15);
+    overflow: hidden;
+    padding: 0.5rem;
+  }
+
+  .meme-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .meme-card:hover .meme-image {
+    transform: scale(1.03);
+  }
+
+  .meme-watermark {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.2);
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .meme-info {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .meme-info h4 {
+    font-size: 1.15rem;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  .meme-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  .meme-details-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meme-author {
+    font-size: 0.85rem;
+    color: var(--pik-text-muted);
+  }
+
+  .meme-author strong {
+    color: var(--pik-red);
+  }
+
+  .meme-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Vote Button */
+  .vote-btn {
+    background-color: rgba(87, 0, 87, 0.3);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: var(--pik-text);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--pik-font);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+  }
+
+  .vote-btn:hover {
+    border-color: var(--pik-red);
+    background-color: rgba(255, 0, 0, 0.15);
+  }
+
+  .vote-btn.voted {
+    background-color: var(--pik-red);
+    border-color: var(--pik-red);
+    color: #fff;
+  }
+
+  .vote-btn.voted .heart-icon {
+    animation: pulseHeart 0.3s ease;
+  }
+
+  @keyframes pulseHeart {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .meme-portal-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .upload-sidebar {
+      position: relative;
+      top: 0;
+    }
+  }
+</style>

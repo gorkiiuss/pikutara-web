@@ -3,15 +3,46 @@
 
 <header class="main-header">
   <div class="logo-wrapper">
-    <img
-      src="/assets/konpartsa_piktograma.svg"
-      alt="Konpartsaren logoa"
-      class="logo-icon"
-    />
-    <div class="logo">PIKUTARA!</div>
+    <div class="firmante">
+      <img
+        src="/assets/konpartsa_piktograma.svg"
+        alt="Pikutara logoa"
+        class="logo-icon pikutara-icon"
+      />
+      <div class="logo pikutara-badge">PIKUTARA!</div>
+    </div>
+    
+    <div class="firmante">
+      <img
+        src="/assets/txabarri_elkarlanean.svg"
+        alt="Txabarri Elkarlanean logoa"
+        class="logo-icon txabarri-icon"
+      />
+      <div class="logo txabarri-badge">TXABARRI ELKARLANEAN</div>
+    </div>
+    
+    <div class="firmante">
+      <img
+        src="/assets/txorromorro.svg"
+        alt="Txorromorro logoa"
+        class="logo-icon txorromorro-icon"
+      />
+      <div class="logo txorromorro-badge">TXORROMORRO</div>
+    </div>
+
+    <div class="firmante">
+      <img
+        src="/assets/mendieta.svg"
+        alt="Mendieta logoa"
+        class="logo-icon mendieta-icon"
+      />
+      <div class="logo mendieta-badge">MENDIETA</div>
+    </div>
   </div>
+  
   <nav class="nav-links">
-    <a href="#" class="brutal-btn">Gora ↑</a>
+    <a href="/" class="brutal-btn header-btn-hasiera">← Hasiera</a>
+    <a href="#" class="brutal-btn header-btn-gora">Gora ↑</a>
   </nav>
 </header>
 
@@ -33,60 +64,174 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .firmante {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
   }
 
   .logo {
     font-family: var(--font-heading);
-    font-size: clamp(1.5rem, 5vh, 2.5rem);
+    font-size: clamp(1.1rem, 3vh, 1.8rem);
     color: var(--text-color);
     background-color: var(--accent-red);
-    padding: 0 0.5rem;
+    padding: 0.2rem 0.6rem;
     line-height: 1;
     border: var(--brutal-border);
-    box-shadow: 4px 4px 0px var(--accent-yellow);
-    transform: rotate(-3deg);
+    box-shadow: 4px 4px 0px var(--text-color);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .logo-icon {
-    height: clamp(3rem, 12vh, 7rem);
+    height: clamp(2.2rem, 7vh, 4.5rem);
     width: auto;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* Sticker rotations for a dynamic look */
+  .pikutara-badge {
+    transform: rotate(-3deg);
+  }
+  .pikutara-icon {
     transform: rotate(-10deg);
   }
 
+  .txabarri-badge {
+    background-color: var(--accent-purple);
+    box-shadow: 4px 4px 0px var(--accent-yellow);
+    transform: rotate(2deg);
+  }
+  .txabarri-icon {
+    transform: rotate(5deg);
+  }
+
+  .txorromorro-badge {
+    background-color: var(--accent-yellow);
+    color: var(--bg-color); /* Correct high contrast black text on yellow! */
+    box-shadow: 4px 4px 0px var(--accent-purple);
+    transform: rotate(-1.5deg);
+  }
+  .txorromorro-icon {
+    transform: rotate(-6deg);
+  }
+
+  .mendieta-badge {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    box-shadow: 4px 4px 0px var(--accent-red);
+    transform: rotate(3.5deg);
+  }
+  .mendieta-icon {
+    height: clamp(1.5rem, 4.5vh, 2.6rem) !important; /* Shrunk to balance its horizontal visual weight */
+    transform: rotate(-7deg);
+  }
+
+  /* Micro-animations */
+  .firmante:hover .logo {
+    transform: scale(1.05) rotate(0deg);
+  }
+  .firmante:hover .logo-icon {
+    transform: scale(1.1) rotate(0deg);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem; /* Increased spacing to separate buttons */
+  }
+
   .nav-links a {
-    font-size: clamp(1.2rem, 4vh, 2rem);
+    white-space: nowrap; /* Prevent arrow and text from wrapping on small screens! */
+    font-size: clamp(1rem, 2.5vh, 1.3rem);
+  }
+
+  /* Distinguish the navigation buttons */
+  .header-btn-hasiera {
+    background-color: var(--accent-yellow) !important;
+    color: var(--bg-color) !important;
+    box-shadow: 5px 5px 0px var(--accent-red) !important;
+  }
+  .header-btn-hasiera:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px var(--accent-red) !important;
+  }
+
+  .header-btn-gora {
+    background-color: var(--text-color) !important;
+    color: var(--bg-color) !important;
+    box-shadow: 5px 5px 0px var(--accent-purple) !important;
+  }
+  .header-btn-gora:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px var(--accent-purple) !important;
+  }
+
+  @media (max-width: 992px) {
+    .main-header {
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1.2rem 1rem;
+      align-items: center;
+    }
+    
+    .logo-wrapper {
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .nav-links {
+      justify-content: center;
+      width: 100%;
+    }
+
+    .nav-links a {
+      flex: 1;
+      text-align: center;
+      max-width: 200px;
+    }
   }
 
   @media (max-width: 768px) {
-    .main-header {
-      padding: 0.5rem 1rem;
-    }
     .logo-icon {
-      height: clamp(2.5rem, 10vw, 4rem);
+      height: 2.2rem;
     }
-    .logo {
-      font-size: clamp(1.2rem, 4vw, 1.5rem);
-    }
-    .nav-links a {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      padding: 0.3rem 0.8rem;
-    }
-  }
 
-  @media (max-height: 500px) and (orientation: landscape) {
-    .main-header {
-      padding: 0.2rem 1rem;
+    .mendieta-icon {
+      height: 1.3rem !important; /* Shrunk on mobile to match visual weight */
     }
-    .logo-icon {
-      height: 2.5rem;
-    }
+    
     .logo {
-      font-size: 1.2rem;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.4rem;
+      border-width: 3px;
+      box-shadow: 2px 2px 0px var(--text-color);
     }
+
+    .txabarri-badge {
+      box-shadow: 2px 2px 0px var(--accent-yellow);
+    }
+
+    .txorromorro-badge {
+      box-shadow: 2px 2px 0px var(--accent-purple);
+    }
+
+    .mendieta-badge {
+      box-shadow: 2px 2px 0px var(--accent-red);
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+
     .nav-links a {
-      font-size: 1rem;
-      padding: 0.2rem 0.5rem;
+      font-size: 0.9rem;
+      padding: 0.3rem 0.6rem;
+      border-width: 3px;
     }
   }
 </style>

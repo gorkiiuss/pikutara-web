@@ -1,0 +1,11 @@
+---
+import PikutaraLayout from '../layouts/PikutaraLayout.astro';
+import TinderApp from '../components/TinderApp.jsx';
+
+const title = "Tinder Musikal";
+const description = "Pikutara musika kudeaketa algoritmo aurreratuarekin.";
+---
+
+<PikutaraLayout title={title} description={description}>
+  <TinderApp client:only="react" />
+</PikutaraLayout>

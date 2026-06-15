@@ -1,0 +1,643 @@
+---
+import PikutaraLayout from "../layouts/PikutaraLayout.astro";
+---
+
+<PikutaraLayout
+  title="Ekitaldiak"
+  description="Pikutara Gazte Konpartsaren ekitaldi eta jaien kartel guztiak."
+>
+  <div class="pik-container page-layout">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>KARTELAK ETA EKITALDIAK</h1>
+    </div>
+
+    <!-- Full-Width Posters Display Grid -->
+    <section class="gallery-content">
+      <div class="posters-grid" id="postersGrid">
+        <!-- Dynamically populated by JS from the API -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="poster-lightbox" id="posterLightbox">
+    <div class="lightbox-overlay" id="lightboxOverlay"></div>
+    <div class="lightbox-content">
+      <button
+        class="close-lightbox"
+        id="closeLightbox"
+        aria-label="Itxi modal-a">&times;</button
+      >
+      <div class="lightbox-body">
+        <div class="lightbox-visual" id="lightboxVisual">
+          <!-- Dynamically filled by script -->
+        </div>
+        <div class="lightbox-info">
+          <h2 id="lightboxTitle">Kartelaren Izenburua</h2>
+          <p id="lightboxDate" class="lightbox-date">Ekitaldiaren Data</p>
+          <p id="lightboxDesc" class="lightbox-desc">
+            Xehetasunak eta informazioa.
+          </p>
+
+          <div class="lightbox-artists" id="lightboxBandsSection">
+            <h4>Egitaraua / Etiketak:</h4>
+            <ul id="lightboxBands">
+              <!-- Dynamically filled -->
+            </ul>
+          </div>
+
+          <div class="download-options">
+            <div class="download-buttons">
+              <button class="pik-btn dload-btn">
+                <span>Deskargatu Kartela 💾</span>
+              </button>
+              <!-- Share Button -->
+              <button
+                class="pik-btn share-btn"
+                id="sharePosterBtn"
+                style="background-color: var(--pik-purple-light); border-color: var(--pik-purple-light);"
+              >
+                <span>Partekatu Kartela 🔗</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</PikutaraLayout>
+
+<script>
+  const API_BASE = "/api/posters";
+  const BASE_URL = "";
+
+  const postersGrid = document.getElementById("postersGrid");
+  const lightbox = document.getElementById("posterLightbox");
+  const closeLightbox = document.getElementById("closeLightbox");
+  const overlay = document.getElementById("lightboxOverlay");
+
+  const lboxTitle = document.getElementById("lightboxTitle");
+  const lboxDate = document.getElementById("lightboxDate");
+  const lboxDesc = document.getElementById("lightboxDesc");
+  const lboxBands = document.getElementById("lightboxBands");
+  const lboxBandsSection = document.getElementById("lightboxBandsSection");
+  const lboxVisual = document.getElementById("lightboxVisual");
+  const shareBtn = document.getElementById("sharePosterBtn");
+
+  let activePoster = null;
+  let postersData = [];
+
+  function getExtension(filePath) {
+    const ext = filePath.split(".").pop();
+    return ext ? "." + ext : "";
+  }
+
+  // Cross-origin safe blob download helper
+  async function downloadFile(url, filename) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Download failed, opening in tab as fallback:", err);
+      window.open(url, "_blank");
+    }
+  }
+
+  async function fetchPosters() {
+    try {
+      const res = await fetch(API_BASE);
+      if (!res.ok) throw new Error("API error");
+      postersData = await res.json();
+
+      if (!postersGrid) return;
+      postersGrid.innerHTML = "";
+
+      if (postersData.length === 0) {
+        postersGrid.innerHTML =
+          '<p style="color: var(--pik-text-muted);">Oraindik ez dago kartelik igota.</p>';
+        return;
+      }
+
+      postersData.forEach((poster: any) => {
+        const card = document.createElement("div");
+        card.className = "pik-card poster-card";
+        card.setAttribute("data-id", poster.id);
+
+        const imgUrl = BASE_URL + poster.file_path;
+
+        card.innerHTML = `
+          <div class="poster-preview-canvas">
+            <img src="${imgUrl}" alt="${poster.title}" class="poster-thumbnail-img" />
+          </div>
+          <div class="poster-card-info">
+            <div class="poster-meta">
+              <span class="poster-date">${poster.event_date}</span>
+            </div>
+            <h4>${poster.title}</h4>
+            <p class="poster-desc-text">${poster.description || ""}</p>
+            <div class="poster-actions">
+              <button class="view-poster-btn" data-id="${poster.id}">Aurreikusi 👁️</button>
+              <button class="download-link-btn" data-id="${poster.id}">Deskargatu 💾</button>
+            </div>
+          </div>
+        `;
+        postersGrid.appendChild(card);
+      });
+
+      // Attach click listeners to view buttons
+      document.querySelectorAll(".view-poster-btn").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          openModal(btn.getAttribute("data-id")),
+        );
+      });
+
+      // Attach click listeners to download buttons
+      document.querySelectorAll(".download-link-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const id = btn.getAttribute("data-id");
+          const poster = postersData.find((p) => String(p.id) === String(id));
+          if (poster) {
+            const url = BASE_URL + poster.file_path;
+            const filename =
+              "Pikutara_Kartela_" +
+              poster.title.replace(/\s+/g, "_") +
+              getExtension(poster.file_path);
+            await downloadFile(url, filename);
+          }
+        });
+      });
+    } catch (e) {
+      console.error("Error fetching posters:", e);
+      if (postersGrid)
+        postersGrid.innerHTML =
+          '<p style="color:var(--pik-red);">Errorea kartelak kargatzean. Zerbitzaria piztuta al dago?</p>';
+    }
+  }
+
+  function openModal(posterId) {
+    if (!posterId) return;
+    const poster = postersData.find((p) => String(p.id) === String(posterId));
+    if (!poster || !lightbox) return;
+
+    activePoster = poster;
+
+    // Fill textual content
+    if (lboxTitle) lboxTitle.textContent = poster.title;
+    if (lboxDate) lboxDate.textContent = poster.event_date;
+    if (lboxDesc) lboxDesc.textContent = poster.description || "";
+
+    // Fill bands/artists/tags
+    if (lboxBands && lboxBandsSection) {
+      lboxBands.innerHTML = "";
+      if (poster.bands && poster.bands.length > 0) {
+        lboxBandsSection.style.display = "block";
+        poster.bands.forEach((band: string) => {
+          if (!band || !band.trim()) return;
+          const li = document.createElement("li");
+          const isTag = !band.includes(" ") && !band.startsWith("#");
+          li.textContent = isTag ? "#" + band : band;
+          lboxBands.appendChild(li);
+        });
+      } else {
+        lboxBandsSection.style.display = "none";
+      }
+    }
+
+    // Set visual image in lightbox
+    if (lboxVisual) {
+      const imgUrl = BASE_URL + poster.file_path;
+      lboxVisual.innerHTML = `<img src="${imgUrl}" alt="${poster.title}" class="lightbox-img" />`;
+    }
+
+    // Update the download button in modal
+    const dloadBtn = document.querySelector(".dload-btn");
+    if (dloadBtn) {
+      (dloadBtn as HTMLElement).onclick = async () => {
+        const url = BASE_URL + poster.file_path;
+        const filename =
+          "Pikutara_Kartela_" +
+          poster.title.replace(/\s+/g, "_") +
+          getExtension(poster.file_path);
+        await downloadFile(url, filename);
+      };
+    }
+
+    // Show lightbox
+    lightbox.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    if (lightbox) {
+      lightbox.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  if (closeLightbox) closeLightbox.addEventListener("click", closeModal);
+  if (overlay) overlay.addEventListener("click", closeModal);
+
+  async function copyLinkToClipboard() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert(`Konpartitzeko lotura kopiatu da arbelean!`);
+    } catch (err) {
+      alert(`Kopiatu esteka hau: ${window.location.href}`);
+    }
+  }
+
+  // Sharing functionality
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      if (!activePoster) return;
+
+      const shareData = {
+        title: activePoster.title,
+        text: `Ikusi Pikutara Konpartsaren "${activePoster.title}" ekitaldia!`,
+        url: window.location.href,
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          if ((err as Error).name !== "AbortError") {
+            await copyLinkToClipboard();
+          }
+        }
+      } else {
+        await copyLinkToClipboard();
+      }
+    });
+  }
+
+  // Load posters on start
+  fetchPosters();
+</script>
+
+<style is:global>
+  .page-layout {
+    padding: 4rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px var(--pik-purple-glow);
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--pik-text-muted);
+  }
+
+  /* Gallery content */
+  .gallery-content {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .posters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 3rem;
+  }
+
+  .poster-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* Preview Canvas representing poster design */
+  .poster-preview-canvas {
+    width: 100%;
+    height: 420px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    user-select: none;
+    padding: 1rem;
+  }
+
+  .poster-thumbnail-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+  }
+
+  .poster-card:hover .poster-thumbnail-img {
+    transform: scale(1.03);
+  }
+
+  /* Info underneath posters */
+  .poster-card-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex-grow: 1;
+  }
+
+  .poster-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .poster-date {
+    font-size: 0.9rem;
+    color: var(--pik-red);
+    font-weight: 800;
+  }
+
+  .poster-card h4 {
+    font-size: 1.4rem;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .poster-desc-text {
+    font-size: 0.95rem;
+    color: var(--pik-text-muted);
+    line-height: 1.4;
+    flex-grow: 1;
+  }
+
+  .poster-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(87, 0, 87, 0.2);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Stylized Aurreikusi button */
+  .view-poster-btn {
+    background-color: transparent;
+    border: 1px solid var(--pik-red);
+    color: #fff;
+    padding: 0.4rem 1rem;
+    font-family: var(--pik-font);
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .view-poster-btn:hover {
+    background-color: var(--pik-red);
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+  }
+
+  /* Download button in card list */
+  .download-link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--pik-text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--pik-red);
+    transition: all 0.2s ease;
+  }
+
+  .download-link-btn:hover {
+    color: var(--pik-red);
+    border-bottom-color: #fff;
+  }
+
+  /* Lightbox Modal Styles */
+  .poster-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .poster-lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 2, 12, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .lightbox-content {
+    background-color: var(--pik-card-bg);
+    border: 2px solid var(--pik-red);
+    border-radius: 12px;
+    width: 95%;
+    max-width: 1050px;
+    max-height: 95vh;
+    z-index: 1002;
+    position: relative;
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .close-lightbox {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 1005;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .close-lightbox:hover {
+    color: var(--pik-red);
+    background: #000;
+    border-color: var(--pik-red);
+  }
+
+  .lightbox-body {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    max-height: 95vh;
+    overflow: hidden;
+  }
+
+  .lightbox-visual {
+    height: 100%;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+    background: #060106;
+    padding: 1.5rem;
+  }
+
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+    display: block;
+    margin: auto;
+  }
+
+  .lightbox-info {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    overflow-y: auto;
+    max-height: 95vh;
+  }
+
+  .lightbox-info h2 {
+    font-size: 2rem;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+  }
+
+  .lightbox-date {
+    font-size: 1.1rem;
+    color: var(--pik-red);
+    font-weight: 800;
+  }
+
+  .lightbox-desc {
+    font-size: 1rem;
+    color: var(--pik-text-muted);
+    line-height: 1.5;
+  }
+
+  .lightbox-artists h4 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .lightbox-artists ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .lightbox-artists li {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid var(--pik-red);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .download-options {
+    border-top: 1px solid rgba(87, 0, 87, 0.3);
+    padding-top: 1.5rem;
+    margin-top: auto; /* Push download section to bottom */
+  }
+
+  .download-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 992px) {
+    .lightbox-body {
+      grid-template-columns: 1fr;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    .lightbox-visual {
+      height: 350px;
+      min-height: auto;
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+      padding: 1rem;
+    }
+
+    .lightbox-img {
+      max-height: 320px;
+    }
+
+    .lightbox-info {
+      padding: 1.8rem;
+      overflow-y: visible;
+      max-height: none;
+    }
+
+    .close-lightbox {
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.85);
+    }
+  }
+</style>

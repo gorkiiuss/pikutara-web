@@ -1,0 +1,1157 @@
+---
+import PikutaraLayout from "../layouts/PikutaraLayout.astro";
+import ShareWidget from "../components/ShareWidget.astro";
+---
+
+<PikutaraLayout
+  title="Gazte Eguna - Bazkaria"
+  description="Eman izena Gazte Eguneko herri bazkarirako. Apúntate a la comida popular del Gazte Eguna."
+>
+  <div class="pik-container page-layout">
+    <div class="page-header">
+      <h1 class="main-title">GAZTE EGUNEKO BAZKARIA</h1>
+      <p class="subtitle">
+        Bete formularioa bazkarirako lekua gordetzeko. Aurten ere, herria
+        astintzera!
+      </p>
+
+      <div class="top-share-banner">
+        <span class="share-banner-label">Partekatu bazkaria!</span>
+        <ShareWidget />
+      </div>
+    </div>
+
+    <div class="bazkaria-portal-grid">
+      <aside class="info-sidebar">
+        <div class="pik-card info-card">
+          <h2>Menuaren Xehetasunak</h2>
+
+          <div class="price-tag">
+            <span class="price-value">10€</span>
+            <span class="price-desc">Prezio herrikoia</span>
+          </div>
+
+          <div class="menu-details">
+            <div class="menu-type">
+              <h4>🍖 Menu Haragijalea</h4>
+              <ul>
+                <li>Pasta entsalada</li>
+                <li>Almondigak tomate saltsan</li>
+                <li>Yogurta zereal eta marmeladarekin</li>
+                <li>Ogia eta edaria barne</li>
+              </ul>
+            </div>
+
+            <div class="menu-type">
+              <h4>🌱 Menu Beganoa</h4>
+              <ul>
+                <li>Pasta entsalada</li>
+                <li>Almondiga beganoak tomate saltsan</li>
+                <li>Sasoiko fruta</li>
+                <li>Ogia eta edaria barne</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="payment-info-box">
+            <div class="payment-icon">💶</div>
+            <div>
+              <h4>Ordainketa</h4>
+              <p>
+                Antolakuntza errazteko, <strong>ordainketa aurretiaz</strong> egitea
+                eskatzen dugu (konpartsakide bati emanez edo gurekin harremanetan
+                jarriz).
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="form-content">
+        <div class="pik-card form-card">
+          <h3>Eman Izena</h3>
+          <p class="form-desc">
+            Mesedez, bete datu guztiak. Posta elektronikoa ondo idatzi duzula
+            ziurtatu.
+          </p>
+
+          <form id="bazkariaForm" class="bazkaria-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bIzen">Izena</label>
+                <input
+                  type="text"
+                  id="bIzen"
+                  class="pik-input"
+                  placeholder="Zure izena..."
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="bAbizenak">Abizenak</label>
+                <input
+                  type="text"
+                  id="bAbizenak"
+                  class="pik-input"
+                  placeholder="Zure abizenak..."
+                  required
+                />
+              </div>
+            </div>
+
+            <div
+              class="form-group animate-fade-in"
+              id="moteGroup"
+              style="display: none; background: rgba(255, 204, 0, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 204, 0, 0.3); margin-bottom: 0.5rem;"
+            >
+              <label for="bMote" style="color: #ffcc00;"
+                >⚠️ Kontuz: Izen-emate berbera detektatu da</label
+              >
+              <p style="font-size: 0.85rem; color: #ccc; margin: 0 0 10px 0;">
+                Izen-abizen berak dituen bi edo gehiago apuntatuta dago jada.
+                Mesedez, idatzi mote bat pertsonak bereizteko:
+              </p>
+              <input
+                type="text"
+                id="bMote"
+                class="pik-input"
+                placeholder="Idatzi motea..."
+                style="border-color: #ffcc00;"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bEmail">Posta elektronikoa</label>
+                <input
+                  type="email"
+                  id="bEmail"
+                  class="pik-input"
+                  placeholder="adibidea@email.com"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="bEmailConfirm">Baieztatu posta</label>
+                <input
+                  type="email"
+                  id="bEmailConfirm"
+                  class="pik-input"
+                  placeholder="adibidea@email.com"
+                  required
+                />
+                <span id="emailError" class="error-text" style="display: none;"
+                  >Postak ez datoz bat!</span
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Menu mota</label>
+              <div class="menu-options-grid">
+                <label class="menu-option-card">
+                  <input
+                    type="radio"
+                    name="menuType"
+                    value="haragijalea"
+                    required
+                    checked
+                  />
+                  <div class="option-content">
+                    <span class="option-icon">🍖</span>
+                    <span class="option-title">Haragijalea</span>
+                  </div>
+                </label>
+                <label class="menu-option-card">
+                  <input
+                    type="radio"
+                    name="menuType"
+                    value="beganoa"
+                    required
+                  />
+                  <div class="option-content">
+                    <span class="option-icon">🌱</span>
+                    <span class="option-title">Beganoa</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="bOharrak">Alergiak edota zehaztapenak (Aukeran)</label
+              >
+              <textarea
+                id="bOharrak"
+                class="pik-input"
+                placeholder="Adibidez: glutenari intolerantzia, fruitu lehorrei, edo kontuan izan beharreko zerbait..."
+                rows="3"
+                style="resize: vertical; min-height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.5rem;">
+              <label>Ordainketa modua</label>
+
+              <div class="payment-options-container">
+                <label class="payment-radio-label">
+                  <input
+                    type="radio"
+                    name="ordainketaModua"
+                    value="aurretiaz"
+                    checked
+                  />
+                  <div class="payment-radio-content">
+                    <span class="p-title">Konpartsakide bati emanda</span>
+                    <span class="p-desc"
+                      >Ezagutzen duzun konpartsakide bati dirua eman</span
+                    >
+                  </div>
+                </label>
+                <label class="payment-radio-label">
+                  <input
+                    type="radio"
+                    name="ordainketaModua"
+                    value="pikutara_zuzenean"
+                  />
+                  <div class="payment-radio-content">
+                    <span class="p-title"
+                      >Konpartsakiderik ez duzu ezagutzen?</span
+                    >
+                    <span class="p-desc"
+                      >Jarri harremanetan Pikutararekin zuzenean</span
+                    >
+                  </div>
+                </label>
+              </div>
+
+              <details class="hidden-payment-details">
+                <summary
+                  >Ez daukat aurretiaz ordaintzeko inolako modurik...</summary
+                >
+                <div class="hidden-payment-box">
+                  <label class="payment-radio-label warning-radio">
+                    <input
+                      type="radio"
+                      name="ordainketaModua"
+                      value="egunean_bertan"
+                    />
+                    <div class="payment-radio-content">
+                      <span class="p-title" style="color: #ff3366;"
+                        >Egunean bertan txosnan (Ez gomendatua)</span
+                      >
+                      <span class="p-desc"
+                        >Kudeaketa zailtzen duenez, mesedez saiatu aurreko
+                        bideak erabiltzen. Soilik ezinbestekoa bada erabili.</span
+                      >
+                    </div>
+                  </label>
+                </div>
+              </details>
+            </div>
+
+            <div class="form-group" id="konpartsakideGroup">
+              <label for="bKonpartsakide">Nori emango diozu dirua?</label>
+              <div class="select-wrapper">
+                <select id="bKonpartsakide" class="pik-input select-input">
+                  <option value=""
+                    >Aukeratu konpartsakide bat (Kargatzen...)</option
+                  >
+                </select>
+              </div>
+
+              <div
+                class="contact-card-box"
+                id="konpartsakideKontaktua"
+                style="display: none;"
+              >
+                <div class="contact-header">
+                  <span class="contact-icon">📱</span>
+                  <strong>Kontakturako bidea:</strong>
+                </div>
+                <div class="contact-methods">
+                  <p id="kInstaRow" style="display: none;">
+                    <strong>Instagram:</strong>
+                    <span id="kInstaText" class="contact-highlight"></span>
+                  </p>
+                  <p id="kTelRow" style="display: none;">
+                    <strong>Telefonoa:</strong>
+                    <span id="kTelText" class="contact-highlight"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" id="pikutaraGroup" style="display: none;">
+              <div class="contact-card-box">
+                <div class="contact-header">
+                  <span class="contact-icon">📩</span>
+                  <strong>Pikutararekin Kontaktua:</strong>
+                </div>
+                <p
+                  style="font-size: 0.9rem; color: var(--pik-text-muted); margin-bottom: 0.8rem; line-height: 1.4;"
+                >
+                  Aukera hau hautatu baduzu, idatzi iezaguzu mezu bat
+                  bazkariaren ordainketa nola egin adosteko:
+                </p>
+                <div class="contact-methods">
+                  <p>
+                    <strong>Instagram:</strong>
+                    <span class="contact-highlight">@pikutaragztkn</span>
+                  </p>
+                  <p>
+                    <strong>Emaila:</strong>
+                    <span class="contact-highlight" style="font-size: 0.8rem;"
+                      >pikutaragaztekonpartsa@gmail.com</span
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="privacy-notice-box" style="margin-top: 1rem;">
+              <div class="privacy-icon">⚠️</div>
+              <p class="privacy-text">
+                <strong>Oharra:</strong> Datu hauek bazkariaren antolaketarako soilik
+                erabiliko dira.
+              </p>
+            </div>
+
+            <button type="submit" class="pik-btn submit-btn" id="submitBtn">
+              Izena Eman
+            </button>
+          </form>
+
+          <div
+            id="successAlert"
+            class="success-alert"
+            style="display: none; margin-top: 2rem;"
+          >
+            <div class="alert-body">
+              <h4>Izen-ematea ondo burutu da!</h4>
+              <p>
+                Zure lekua gordeta dago. Laster email bat jasoko duzu zure
+                bertaratzearen xehetasunekin. <strong
+                  >Emaila heltzen ez bazaizu begiratu SPAM karpetan.</strong
+                > Bestela, jarri gurekin zuzenean kontaktuan <a
+                  href="mailto:pikutaragaztekonpartsa@gmail.com"
+                  style="color: var(--pik-primary); text-decoration: underline;"
+                  >pikutaragaztekonpartsa@gmail.com</a>
+              </p>
+
+              <div
+                class="success-share-box"
+                style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); width: 100%;"
+              >
+                <p
+                  style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 1.2rem;"
+                >
+                  Partekatu lagunekin ere apuntatu daitezen! 🚀
+                </p>
+                <ShareWidget />
+              </div>
+
+              <button
+                id="resetFormBtn"
+                class="pik-btn-secondary"
+                style="margin-top: 2rem;">Beste bat apuntatu</button
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</PikutaraLayout>
+
+<script>
+  const bazkariaForm = document.getElementById(
+    "bazkariaForm",
+  ) as HTMLFormElement;
+  const emailInput = document.getElementById("bEmail") as HTMLInputElement;
+  const emailConfirmInput = document.getElementById(
+    "bEmailConfirm",
+  ) as HTMLInputElement;
+  const emailError = document.getElementById("emailError");
+  const successAlert = document.getElementById("successAlert");
+  const submitBtn = document.getElementById("submitBtn") as HTMLButtonElement;
+  const resetFormBtn = document.getElementById("resetFormBtn");
+
+  // Elementos de pago
+  const paymentRadios = document.querySelectorAll(
+    'input[name="ordainketaModua"]',
+  );
+  const konpartsakideGroup = document.getElementById("konpartsakideGroup");
+  const konpartsakideSelect = document.getElementById(
+    "bKonpartsakide",
+  ) as HTMLSelectElement;
+  const konpartsakideKontaktua = document.getElementById(
+    "konpartsakideKontaktua",
+  );
+  const pikutaraGroup = document.getElementById("pikutaraGroup");
+
+  const kInstaRow = document.getElementById("kInstaRow");
+  const kInstaText = document.getElementById("kInstaText");
+  const kTelRow = document.getElementById("kTelRow");
+  const kTelText = document.getElementById("kTelText");
+
+  let konpartsakideakData: any[] = [];
+
+  if (
+    bazkariaForm &&
+    emailInput &&
+    emailConfirmInput &&
+    emailError &&
+    successAlert
+  ) {
+    // Fetch konpartsakideak activos
+    const fetchKonpartsakideak = async () => {
+      try {
+        const res = await fetch("/api/konpartsakideak/diru-jasotzaileak");
+        if (res.ok) {
+          konpartsakideakData = await res.json();
+          konpartsakideSelect.innerHTML =
+            '<option value="">Aukeratu nori eman...</option>';
+
+          if (konpartsakideakData.length === 0) {
+            konpartsakideSelect.innerHTML =
+              '<option value="">Ez dago inor erabilgarri momentuz</option>';
+            return;
+          }
+
+          konpartsakideakData.forEach((k: any) => {
+            const opt = document.createElement("option");
+            opt.value = k.id;
+            opt.textContent = k.izena;
+            konpartsakideSelect.appendChild(opt);
+          });
+        }
+      } catch (e) {
+        console.error("Errorea konpartsakideak kargatzean:", e);
+        konpartsakideSelect.innerHTML =
+          '<option value="">Errorea kargatzean</option>';
+      }
+    };
+
+    fetchKonpartsakideak();
+
+    // Handle payment radio change
+    paymentRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+
+        // Hide all dynamic blocks first
+        if (konpartsakideGroup) konpartsakideGroup.style.display = "none";
+        if (pikutaraGroup) pikutaraGroup.style.display = "none";
+        konpartsakideSelect.required = false;
+
+        // Show the relevant block based on selection
+        if (target.value === "aurretiaz") {
+          if (konpartsakideGroup) konpartsakideGroup.style.display = "flex";
+          konpartsakideSelect.required = true;
+        } else if (target.value === "pikutara_zuzenean") {
+          if (pikutaraGroup) pikutaraGroup.style.display = "flex";
+        }
+      });
+    });
+
+    // Initial setup
+    if (konpartsakideSelect) konpartsakideSelect.required = true;
+
+    // Handle Select change to show contact info split (Insta & Tel)
+    if (konpartsakideSelect) {
+      konpartsakideSelect.addEventListener("change", (e) => {
+        const selectedId = (e.target as HTMLSelectElement).value;
+        const selectedK = konpartsakideakData.find(
+          (k) => String(k.id) === String(selectedId),
+        );
+
+        if (selectedK && konpartsakideKontaktua) {
+          let hasContact = false;
+
+          // Check Instagram
+          if (selectedK.instagram && kInstaRow && kInstaText) {
+            kInstaText.textContent =
+              "@" + selectedK.instagram.replace(/^@/, "");
+            kInstaRow.style.display = "block";
+            hasContact = true;
+          } else if (kInstaRow) {
+            kInstaRow.style.display = "none";
+          }
+
+          // Check Telefonoa
+          if (selectedK.telefono && kTelRow && kTelText) {
+            kTelText.textContent = selectedK.telefono;
+            kTelRow.style.display = "block";
+            hasContact = true;
+          } else if (kTelRow) {
+            kTelRow.style.display = "none";
+          }
+
+          if (hasContact) {
+            konpartsakideKontaktua.style.display = "block";
+          } else {
+            konpartsakideKontaktua.style.display = "none";
+          }
+        } else if (konpartsakideKontaktua) {
+          konpartsakideKontaktua.style.display = "none";
+        }
+      });
+    }
+
+    // Validación en tiempo real del email
+    const validateEmails = () => {
+      if (
+        emailConfirmInput.value &&
+        emailInput.value !== emailConfirmInput.value
+      ) {
+        emailError.style.display = "block";
+        emailConfirmInput.style.borderColor = "var(--pik-red)";
+        return false;
+      } else {
+        emailError.style.display = "none";
+        emailConfirmInput.style.borderColor = "rgba(255, 0, 0, 0.3)";
+        return true;
+      }
+    };
+
+    emailInput.addEventListener("input", validateEmails);
+    emailConfirmInput.addEventListener("input", validateEmails);
+
+    // Manejo del evento Submit
+    bazkariaForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!validateEmails()) {
+        emailConfirmInput.focus();
+        return;
+      }
+
+      // Preparación para el Backend
+      const izena = (document.getElementById("bIzen") as HTMLInputElement)
+        .value;
+      const abizenak = (
+        document.getElementById("bAbizenak") as HTMLInputElement
+      ).value;
+      const email = emailInput.value;
+      const menuType = (
+        document.querySelector(
+          'input[name="menuType"]:checked',
+        ) as HTMLInputElement
+      ).value;
+      const ordainketaModua = (
+        document.querySelector(
+          'input[name="ordainketaModua"]:checked',
+        ) as HTMLInputElement
+      ).value;
+      const konpartsakideId =
+        ordainketaModua === "aurretiaz" ? konpartsakideSelect.value : null;
+      const oharrak = (
+        document.getElementById("bOharrak") as HTMLTextAreaElement
+      ).value;
+      const moteInput = document.getElementById("bMote") as HTMLInputElement;
+      const mote = moteInput ? moteInput.value : "";
+
+      const payload = {
+        izena,
+        abizenak,
+        email,
+        menuType,
+        ordainketaModua,
+        konpartsakideId,
+        oharrak,
+        mote,
+      };
+
+      // UI: Cargando...
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "Bidaltzen... ⏳";
+
+      try {
+        // Enviar datos
+        const response = await fetch("/api/bazkaria", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.status === 409) {
+          const errData = await response.json();
+          const moteGroupEl = document.getElementById("moteGroup");
+          if (moteGroupEl && moteInput) {
+            moteGroupEl.style.display = "block";
+            moteInput.required = true;
+            moteInput.focus();
+
+            moteGroupEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          throw new Error(errData.error);
+        }
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || "Errore bat egon da zerbitzarian.");
+        }
+
+        // Mostrar éxito
+        bazkariaForm.style.display = "none";
+        successAlert.style.display = "flex";
+      } catch (error: any) {
+        console.error("Errorea:", error);
+        alert(error.message || "Errore bat egon da. Mesedez, saiatu berriro.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    });
+
+    // Resetear formulario para apuntar a otra persona
+    if (resetFormBtn) {
+      resetFormBtn.addEventListener("click", () => {
+        bazkariaForm.reset();
+        if (konpartsakideKontaktua)
+          konpartsakideKontaktua.style.display = "none";
+        if (pikutaraGroup) pikutaraGroup.style.display = "none";
+        if (konpartsakideGroup) konpartsakideGroup.style.display = "flex"; // Reset to default view
+        successAlert.style.display = "none";
+        bazkariaForm.style.display = "flex";
+      });
+    }
+  }
+</script>
+
+<style is:global>
+  .top-share-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 2.5rem;
+    background: rgba(87, 0, 87, 0.25);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 8px 32px 0 rgba(87, 0, 87, 0.2);
+    backdrop-filter: blur(4px);
+  }
+
+  .share-banner-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: var(--pik-font);
+  }
+
+  .page-layout {
+    padding: 4rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px var(--pik-purple-glow);
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--pik-text-muted);
+  }
+
+  /* Layout Principal */
+  .bazkaria-portal-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* --- LEFT SIDEBAR: INFO --- */
+  .info-sidebar {
+    position: sticky;
+    top: 100px;
+  }
+
+  .info-card {
+    border-color: rgba(255, 0, 0, 0.4);
+    background: linear-gradient(180deg, var(--pik-card-bg) 0%, #300030 100%);
+  }
+
+  .info-card h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .price-tag {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(87, 0, 87, 0.4);
+    border: 1px solid var(--pik-purple);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .price-value {
+    font-size: 2.5rem;
+    font-family: var(--font-heading), "Anton", sans-serif;
+    color: #ffff00;
+    line-height: 1;
+    text-shadow: 2px 2px 0px var(--pik-red);
+  }
+
+  .price-desc {
+    color: var(--pik-text);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .menu-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .menu-type h4 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .menu-type ul {
+    list-style: none;
+    padding-left: 1.8rem;
+    color: var(--pik-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .menu-type li {
+    position: relative;
+    margin-bottom: 0.3rem;
+  }
+
+  .menu-type li::before {
+    content: "•";
+    color: var(--pik-red);
+    position: absolute;
+    left: -1rem;
+    font-weight: bold;
+  }
+
+  .payment-info-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--pik-purple-light);
+    padding: 1.2rem;
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .payment-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .payment-info-box h4 {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .payment-info-box p {
+    color: var(--pik-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  /* --- RIGHT CONTENT: FORM --- */
+  .form-card h3 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-desc {
+    font-size: 1rem;
+    color: var(--pik-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .bazkaria-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--pik-text);
+  }
+
+  .error-text {
+    color: #ff3366;
+    font-size: 0.85rem;
+    font-weight: 700;
+    position: absolute;
+    bottom: -1.2rem;
+    left: 0;
+  }
+
+  /* Custom Menu Radio Buttons */
+  .menu-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .menu-option-card {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .menu-option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .option-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1.2rem;
+    background-color: rgba(12, 2, 12, 0.6);
+    border: 2px solid rgba(255, 0, 0, 0.2);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .option-icon {
+    font-size: 1.5rem;
+  }
+
+  .option-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--pik-text-muted);
+  }
+
+  .menu-option-card:hover .option-content {
+    background-color: rgba(87, 0, 87, 0.3);
+    border-color: rgba(255, 0, 0, 0.5);
+  }
+
+  /* Checked State */
+  .menu-option-card input[type="radio"]:checked + .option-content {
+    background-color: rgba(255, 0, 0, 0.15);
+    border-color: var(--pik-red);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+  }
+
+  .menu-option-card
+    input[type="radio"]:checked
+    + .option-content
+    .option-title {
+    color: #fff;
+  }
+
+  /* Custom Payment Radios */
+  .payment-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .payment-radio-label {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .payment-radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .payment-radio-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.2rem;
+    background-color: rgba(12, 2, 12, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .payment-radio-content .p-title {
+    font-weight: 700;
+    color: var(--pik-text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .payment-radio-content .p-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .payment-radio-label:hover .payment-radio-content {
+    background-color: rgba(87, 0, 87, 0.3);
+    border-color: rgba(255, 0, 0, 0.3);
+  }
+
+  .payment-radio-label input[type="radio"]:checked + .payment-radio-content {
+    background-color: rgba(255, 0, 0, 0.15);
+    border-color: var(--pik-red);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+  }
+
+  .payment-radio-label
+    input[type="radio"]:checked
+    + .payment-radio-content
+    .p-title {
+    color: #fff;
+  }
+
+  /* Hidden Payment Detail Toggle */
+  .hidden-payment-details {
+    margin-top: 0.5rem;
+  }
+
+  .hidden-payment-details summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.2s;
+    display: inline-block;
+    padding: 0.5rem 0;
+  }
+
+  .hidden-payment-details summary:hover {
+    color: var(--pik-red);
+  }
+
+  .hidden-payment-box {
+    margin-top: 0.5rem;
+  }
+
+  .warning-radio .payment-radio-content {
+    border-color: rgba(255, 51, 102, 0.3);
+    background-color: rgba(255, 51, 102, 0.05);
+  }
+
+  .warning-radio input[type="radio"]:checked + .payment-radio-content {
+    border-color: #ff3366;
+    background-color: rgba(255, 51, 102, 0.15);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
+  }
+
+  /* Custom Styled Select with arrow */
+  .select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .select-wrapper::after {
+    content: "▼";
+    font-size: 0.8rem;
+    color: var(--pik-red);
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  .select-input {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 3rem;
+  }
+
+  /* Contact details box styling */
+  .contact-card-box {
+    background: rgba(87, 0, 87, 0.15);
+    border: 1px solid rgba(255, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .contact-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .contact-icon {
+    font-size: 1.2rem;
+  }
+
+  .contact-methods p {
+    font-size: 0.95rem;
+    color: var(--pik-text-muted);
+    margin: 0.4rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .contact-highlight {
+    color: #ffff00;
+    font-family: var(--font-mono), monospace;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Privacy Notice */
+  .privacy-notice-box {
+    display: flex;
+    gap: 0.8rem;
+    padding: 1rem;
+    background-color: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 6px;
+    align-items: center;
+  }
+
+  .privacy-icon {
+    font-size: 1.2rem;
+  }
+
+  .privacy-text {
+    font-size: 0.85rem;
+    color: var(--pik-text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Success Message Styling */
+  .success-alert {
+    padding: 2.5rem;
+    background-color: rgba(87, 0, 87, 0.2);
+    border: 1px solid var(--pik-red);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.2rem;
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+  }
+
+  .alert-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 10px var(--pik-red));
+  }
+
+  .alert-body h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .alert-body p {
+    color: var(--pik-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .pik-btn-secondary {
+    background: transparent;
+    border: 1px solid var(--pik-red);
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--pik-font);
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+
+  .pik-btn-secondary:hover {
+    background: var(--pik-red);
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .bazkaria-portal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .info-sidebar {
+      position: relative;
+      top: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .menu-options-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

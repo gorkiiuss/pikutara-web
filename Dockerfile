@@ -1,5 +1,5 @@
 # Eraikuntza fasea (Build stage)
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 # Lan karpeta zehaztu
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml* ./
 
 # pnpm instalatu aurrera egin aurretik
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10
 
 # Proiektuaren mendekotasunak instalatu
 RUN pnpm install

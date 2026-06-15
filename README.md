@@ -41,3 +41,7 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+TODO: Perfecto! Ahora, para ir ahorrando trabajo a los etiquetadores, lo que haremos será ir generando una base de los artistas que hayamos ido etiquetando nosotros, para si se da el caso de que aparece otra canción del mismo artista, etiquetarlo de la misma manera
+
+te he hablado ya de la optimización en cuanto a los géneros de los artistas que etiquetemos nosotros?

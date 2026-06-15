@@ -6,9 +6,38 @@ services:
     container_name: konpartsa_txartel_ez_web
     restart: unless-stopped
     ports:
-      # OCI zerbitzarian aske duzun barne-portu bat izan daiteke; 
-      # adibidez, localhost:8080.
-      # Alderantzizko Proxyak (NPM/Caddy) portu horretara apuntatuko du.
-      - "127.0.0.1:4300:80"
+      - "4300:80"
     environment:
       - NODE_ENV=production
+
+  backend:
+    build: ./backend
+    container_name: konpartsa_txartel_ez_api
+    restart: unless-stopped
+    ports:
+      - "3030:3000"
+    environment:
+      - NODE_ENV=production
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASS=${ADMIN_PASS}
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/uploads:/app/uploads
+
+  downloader:
+    build: ./downloader
+    container_name: pikutara_downloader
+    depends_on:
+      - backend
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://backend:3000/api/musika/songs
+      - DOWNLOAD_DIR=/app/downloads
+      - COOKIES_PATH=/app/data/cookies.txt
+    volumes:
+      - ./backend/data:/app/data:ro
+      - ./downloads:/app/downloads
+

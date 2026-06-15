@@ -1,21 +1,113 @@
 ---
+
 ---
 
-<footer class="main-footer">
-  <div class="footer-content">
-    <div class="brand">
-      <h3>PIKUTARA! GAZTE KONPARTSA</h3>
-      <p>Sestao Astintzen!</p>
+<footer
+  class="main-footer"
+  style="background-color: var(--bg-color); color: var(--text-color); border-top: 8px solid var(--accent-red); padding-bottom: 3rem;"
+>
+  <div
+    class="footer-content"
+    style="padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 1200px; margin: 0 auto;"
+  >
+    <!-- Section Title -->
+    <div
+      style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--accent-yellow); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;"
+    >
+      Manifestuaren sinatzaileak:
     </div>
 
-    <div class="socials">
-      <a
-        href="https://www.instagram.com/pikutaragztkn?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-        class="social-link brutal-btn">Instagram</a
+    <!-- Cards Flex Container -->
+    <div
+      style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; width: 100%;"
+    >
+      <!-- Pikutara Card -->
+      <div
+        class="foot-card pikutara-card-style"
+        style="width: 200px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0.6rem; border: 3px solid var(--accent-red); background: #1a1a1a; box-shadow: 4px 4px 0px var(--accent-yellow); transform: rotate(-2deg); transition: transform 0.2s, box-shadow 0.2s;"
       >
+        <img
+          src="/assets/konpartsa_piktograma.svg"
+          alt="Pikutara"
+          style="height: 2.3rem; width: auto;"
+        />
+        <a
+          href="https://www.instagram.com/pikutaragztkn"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="foot-social-link"
+          style="font-family: var(--font-body); font-size: 0.72rem; color: var(--text-color); text-decoration: none; font-weight: 700; border-top: 1px dashed var(--accent-red); width: 100%; text-align: center; padding-top: 0.4rem;"
+        >
+          @pikutaragztkn
+        </a>
+      </div>
+
+      <!-- Txabarri Card -->
+      <div
+        class="foot-card txabarri-card-style"
+        style="width: 200px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0.6rem; border: 3px solid var(--accent-purple); background: #1a1a1a; box-shadow: 4px 4px 0px var(--accent-red); transform: rotate(1.5deg); transition: transform 0.2s, box-shadow 0.2s;"
+      >
+        <img
+          src="/assets/txabarri_elkarlanean.svg"
+          alt="Txabarri Elkarlanean"
+          style="height: 2.3rem; width: auto;"
+        />
+        <a
+          href="https://www.instagram.com/txabarrielkarlanean"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="foot-social-link"
+          style="font-family: var(--font-body); font-size: 0.72rem; color: var(--text-color); text-decoration: none; font-weight: 700; border-top: 1px dashed var(--accent-purple); width: 100%; text-align: center; padding-top: 0.4rem;"
+        >
+          @txabarrielkarlanean
+        </a>
+      </div>
+
+      <!-- Txorromorro Card -->
+      <div
+        class="foot-card txorromorro-card-style"
+        style="width: 200px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0.6rem; border: 3px solid var(--accent-yellow); background: #1a1a1a; box-shadow: 4px 4px 0px var(--accent-purple); transform: rotate(-1deg); transition: transform 0.2s, box-shadow 0.2s;"
+      >
+        <img
+          src="/assets/txorromorro.svg"
+          alt="Txorromorro"
+          style="height: 2.3rem; width: auto;"
+        />
+        <a
+          href="https://www.instagram.com/askatasunahelburu"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="foot-social-link"
+          style="font-family: var(--font-body); font-size: 0.72rem; color: var(--text-color); text-decoration: none; font-weight: 700; border-top: 1px dashed var(--accent-yellow); width: 100%; text-align: center; padding-top: 0.4rem;"
+        >
+          @askatasunahelburu
+        </a>
+      </div>
+
+      <!-- Mendieta Card -->
+      <div
+        class="foot-card mendieta-card-style"
+        style="width: 200px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0.6rem; border: 3px solid var(--text-color); background: #1a1a1a; box-shadow: 4px 4px 0px var(--accent-red); transform: rotate(2.5deg); transition: transform 0.2s, box-shadow 0.2s;"
+      >
+        <img
+          src="/assets/mendieta.svg"
+          alt="Mendieta"
+          style="height: 1.5rem; width: auto; max-width: 90%;"
+        />
+        <a
+          href="https://www.instagram.com/mendietakulturelkartea"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="foot-social-link"
+          style="font-family: var(--font-body); font-size: 0.68rem; color: var(--text-color); text-decoration: none; font-weight: 700; border-top: 1px dashed var(--text-color); width: 100%; text-align: center; padding-top: 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+        >
+          @mendietakulturelkartea
+        </a>
+      </div>
     </div>
   </div>
 
+  <!-- Marquee -->
   <div class="marquee">
     <div class="marquee-content">
       <span>EZ DUGU TXARTELARIK ONARTZEN!</span>
@@ -36,43 +128,37 @@
 </footer>
 
 <style>
-
-  .main-footer {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    border-top: 8px solid var(--accent-red);
-    padding-bottom: 3rem; /* Leave space for the sticky marquee */
+  /* Interactions and fallbacks via CSS classes */
+  .foot-card:hover {
+    transform: scale(1.05) rotate(0deg) !important;
   }
 
-  .footer-content {
-    padding: 4rem 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 2rem;
+  .pikutara-card-style:hover {
+    box-shadow: 6px 6px 0px var(--accent-purple) !important;
   }
 
-  .brand h3 {
-    font-size: 2.2rem;
-    color: var(--accent-yellow);
-    margin-bottom: 0.5rem;
+  .txabarri-card-style:hover {
+    box-shadow: 6px 6px 0px var(--accent-yellow) !important;
   }
 
-  .brand p {
-    font-size: 1.5rem;
+  .txorromorro-card-style:hover {
+    box-shadow: 6px 6px 0px var(--accent-red) !important;
   }
 
-  .socials {
-    display: flex;
-    gap: 1rem;
+  .mendieta-card-style:hover {
+    box-shadow: 6px 6px 0px var(--accent-purple) !important;
   }
 
-  .social-link {
-    font-size: 3rem;
-    padding: 0.5rem 1rem;
+  .foot-social-link {
+    transition: color 0.15s ease;
+  }
+
+  .foot-social-link:hover {
+    color: var(--accent-yellow) !important;
+  }
+
+  .txorromorro-card-style .foot-social-link:hover {
+    color: var(--accent-purple) !important;
   }
 
   .marquee {
@@ -110,21 +196,6 @@
   }
 
   @media (max-width: 768px) {
-    .footer-content {
-      padding: 2rem 1rem;
-      flex-direction: column;
-      text-align: center;
-      gap: 1.5rem;
-    }
-    .brand h3 {
-      font-size: 1.8rem;
-    }
-    .brand p {
-      font-size: 1.2rem;
-    }
-    .social-link {
-      font-size: 1.5rem;
-    }
     .marquee {
       font-size: 1.2rem;
     }

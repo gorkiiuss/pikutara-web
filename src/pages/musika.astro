@@ -1,0 +1,1729 @@
+---
+import PikutaraLayout from "../layouts/PikutaraLayout.astro";
+---
+
+<PikutaraLayout
+  title="Baloratu Musika"
+  description="Pikutara Konpartsaren txosnako musika baloratu eta proposatu zure gogokoenak."
+>
+  <div class="pik-container page-layout">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>MUSIKA ETA PLAYLISTA</h1>
+      <p class="subtitle">
+        Herri musika gure txosnarako. Baloratu gure zerrenda eta proposatu
+        abesti berriak!
+      </p>
+    </div>
+
+    <!-- 1. Global Playlist Rating Section (Full Width) -->
+    <section class="pik-card playlist-rating-card" id="playlistRatingCard">
+      <div class="playlist-grid">
+        <!-- Playlist details/mock widget -->
+        <div class="playlist-info-block">
+          <div class="playlist-badge">PLAYLIST OFIZIALA</div>
+          <h2>Pikutara Txosna 2026</h2>
+          <p class="playlist-desc">
+            Sestaoko txosnetan aurten jarriko dugun musika zerrenda nagusia.
+            Punk, Rock, Ska, Reggetoia, Folka, Elektronika, Hip-hop-a eta denetariko musika biltzen dituen
+            bilduma.
+          </p>
+        </div>
+
+        <!-- Rating Form -->
+        <div class="playlist-rate-form-block" id="playlistRatingBox">
+          <h3>Zer iruditzen zaizu zerrenda?</h3>
+          <p class="rate-desc">
+            Baloratu gure musika aukeraketa izarrekin (1etik 5era) eta utzi zure
+            iruzkina hobetzen laguntzeko.
+          </p>
+
+          <form id="playlistRateForm" class="playlist-rate-form">
+            <div class="form-group">
+              <div class="star-rating" id="playlistStars">
+                <button
+                  type="button"
+                  class="p-star-btn"
+                  data-value="1"
+                  aria-label="Izartxo 1">★</button
+                >
+                <button
+                  type="button"
+                  class="p-star-btn"
+                  data-value="2"
+                  aria-label="2 Izartxo">★</button
+                >
+                <button
+                  type="button"
+                  class="p-star-btn"
+                  data-value="3"
+                  aria-label="3 Izartxo">★</button
+                >
+                <button
+                  type="button"
+                  class="p-star-btn"
+                  data-value="4"
+                  aria-label="4 Izartxo">★</button
+                >
+                <button
+                  type="button"
+                  class="p-star-btn"
+                  data-value="5"
+                  aria-label="5 Izartxo">★</button
+                >
+              </div>
+              <input type="hidden" id="playlistRatingValue" value="5" />
+            </div>
+
+            <div class="form-group">
+              <textarea
+                id="playlistComment"
+                class="pik-input"
+                rows="2"
+                placeholder="Zerrenda bikaina! Punk gehiago botatzen dut faltan..."
+                required></textarea>
+            </div>
+
+            <button type="submit" class="pik-btn">Bidali Balorazioa</button>
+          </form>
+
+          <div
+            id="playlistSuccess"
+            class="success-alert"
+            style="display: none;"
+          >
+            <div class="alert-icon">✊</div>
+            <div class="alert-body">
+              <h4>Mila esker baloratzeagatik!</h4>
+              <p>
+                Zure iruzkina jaso dugu. Orain abesti berriak proposatu
+                ditzakezu behean.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Dual columns for Song proposals and Chart (only when voted) -->
+    <div class="music-portal-grid" id="musicPortalGrid">
+      <!-- Submission Form -->
+      <section class="pik-card submit-section" id="submitSection">
+        <h3>Proposatu Abesti Bat</h3>
+        <p class="form-desc">
+          Sartu Spotifyko edo Youtubeko abesti baten esteka zuzena gure
+          playlist-ean sartzeko.
+        </p>
+
+        <form id="songForm" class="song-form">
+          <div class="form-group">
+            <label for="songUser">Zure Izena</label>
+            <input
+              type="text"
+              id="songUser"
+              class="pik-input"
+              placeholder="..."
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="songUrl">Abestiaren URL Esteka</label>
+            <input
+              type="url"
+              id="songUrl"
+              class="pik-input"
+              placeholder="Spotify track edo YouTube video esteka..."
+              required
+            />
+            <div id="urlError" class="error-text" style="display: none;"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="songTitle">Abestiaren Izenburua</label>
+              <input
+                type="text"
+                id="songTitle"
+                class="pik-input"
+                placeholder="..."
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="songArtist">Taldea</label>
+              <input
+                type="text"
+                id="songArtist"
+                class="pik-input"
+                placeholder="..."
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="songComment">Iruzkin Laburra</label>
+            <textarea
+              id="songComment"
+              class="pik-input"
+              rows="3"
+              placeholder="Zergatik jarri behar dugu abesti hau?"></textarea>
+          </div>
+
+          <!-- Privacy Notice Statement -->
+          <div class="privacy-notice-box">
+            <div class="privacy-icon">⚠️</div>
+            <p class="privacy-text">
+            <strong>Lege-oharra:</strong> Abestia bidaltzean, zure izena, iruzkina eta proposatutako
+              abestia webgunean publikoki erakutsiko direla onartzen duzu.
+            </p>
+          </div>
+
+          <button type="submit" class="pik-btn submit-btn"
+            >Bidali Proposamena</button
+          >
+        </form>
+
+        <!-- Success Message -->
+        <div id="musicSuccess" class="success-alert" style="display: none;">
+          <div class="alert-icon">🎵</div>
+          <div class="alert-body">
+            <h4>Proposamena jaso da!</h4>
+            <p>
+              Datu-basera bidali da. Balioztatu ostean, zerrendan txertatuko
+              dugu.
+            </p>
+            <button
+              id="proposeAnother"
+              class="pik-btn-secondary"
+              style="margin-top: 1rem; border: 1px solid var(--pik-red); padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.9rem;"
+              >Beste abesti bat proposatu</button
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Chart Section -->
+      <div class="pik-card chart-card" id="chartCard">
+        <div class="section-title-bar chart-title-bar">
+          <div class="chart-header-row">
+            <h3>Musika Joerak</h3>
+            <span class="active-badge">Grafikoa</span>
+          </div>
+          <div id="chartBreadcrumbContainer">
+            <button id="chartBackButton">⬅️ Atzera</button>
+            <span id="chartBreadcrumbs"></span>
+          </div>
+        </div>
+        <div style="width: 100%; max-width: 400px; margin: 1rem auto;">
+          <canvas id="genreChart"></canvas>
+        </div>
+        <div class="chart-info-prompt">
+          <span class="prompt-icon">💡</span>
+          <p class="prompt-text">
+            Egin klik grafikoko generoen gainean (adibidez, <strong>Bestelakoak</strong> edo azpigeneroak dituztenak) xehetasunak eta banaketak ikusteko.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Proposed Songs List (Full Width, only when voted) -->
+    <div class="proposed-songs-container" id="proposedSongsContainer">
+      <div class="section-title-bar" id="songsTitleBar">
+        <h3>Txosnaguneko musika-zerrenda</h3>
+        <span class="active-badge">Jasotakoak</span>
+      </div>
+
+      <!-- Genre Selector Filter -->
+      <div class="songs-filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">Generoa:</span>
+          <div class="custom-select-wrapper" id="customSelectWrapper">
+            <button class="pik-select-trigger" id="customSelectTrigger">
+              <span id="selectedGenreName">Guztiak (Denak erakutsi)</span>
+              <span class="trigger-arrow">▼</span>
+            </button>
+            <div class="pik-select-dropdown" id="customSelectDropdown" style="display: none;">
+              <!-- Hierarchical options will be dynamically loaded here -->
+            </div>
+          </div>
+        </div>
+        <div class="songs-count-badge">
+          Abestiak: <span id="displayedCount" class="badge-value">0</span> / <span id="totalMatchingCount" class="badge-value">0</span>
+        </div>
+      </div>
+
+      <div class="songs-list" id="songsList">
+        <!-- Dynamically filled by JS -->
+        <p style="color: var(--pik-text-muted);">Abestiak kargatzen...</p>
+      </div>
+
+      <!-- Pagination / Load More button -->
+      <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+        <button id="loadMoreBtn" class="pik-btn load-more-btn">
+          Ikusi gehiago (Erakutsi 10 gehiago)
+        </button>
+      </div>
+    </div>
+  </div>
+</PikutaraLayout>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  // Playlist Star rating interactivity
+  const pStarBtns = document.querySelectorAll(".p-star-btn");
+  const playlistRatingValue = document.getElementById(
+    "playlistRatingValue",
+  ) as HTMLInputElement;
+
+  function updatePlaylistStars(val: number) {
+    pStarBtns.forEach((btn, idx) => {
+      if (idx < val) {
+        btn.classList.add("selected");
+      } else {
+        btn.classList.remove("selected");
+      }
+    });
+    if (playlistRatingValue) {
+      playlistRatingValue.value = String(val);
+    }
+  }
+
+  // Initialize with 5 stars
+  updatePlaylistStars(5);
+
+  pStarBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const val = Number(btn.getAttribute("data-value"));
+      updatePlaylistStars(val);
+    });
+  });
+
+  // Check if already reviewed on load
+  let hasReviewed =
+    localStorage.getItem("pikutara_playlist_reviewed") === "true";
+  const playlistRateForm = document.getElementById(
+    "playlistRateForm",
+  ) as HTMLFormElement;
+  const playlistSuccess = document.getElementById("playlistSuccess");
+
+  function updateStateVisibility() {
+    const playlistRatingCard = document.getElementById("playlistRatingCard");
+    const submitSection = document.getElementById("submitSection");
+    const proposedSongsContainer = document.getElementById("proposedSongsContainer");
+    const portalGrid = document.getElementById("musicPortalGrid");
+
+    if (hasReviewed) {
+      if (playlistRatingCard) playlistRatingCard.style.display = "none";
+      if (submitSection) submitSection.style.display = "block";
+      if (proposedSongsContainer) proposedSongsContainer.style.display = "block";
+      if (portalGrid) portalGrid.classList.add("voted-state");
+    } else {
+      if (playlistRatingCard) playlistRatingCard.style.display = "block";
+      if (submitSection) submitSection.style.display = "none";
+      if (proposedSongsContainer) proposedSongsContainer.style.display = "none";
+      if (portalGrid) portalGrid.classList.remove("voted-state");
+    }
+  }
+
+  // Initialize visibility state on load
+  updateStateVisibility();
+
+  // Async server validation if local storage does not have it yet
+  if (!hasReviewed) {
+    fetch("/api/playlist/has-voted")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.hasVoted) {
+          localStorage.setItem("pikutara_playlist_reviewed", "true");
+          hasReviewed = true;
+          updateStateVisibility();
+        }
+      })
+      .catch((err) => console.error("Error checking vote status:", err));
+  }
+
+  // Playlist rating form submission via API
+  if (playlistRateForm && playlistSuccess) {
+    playlistRateForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ratingValueInput = document.getElementById(
+        "playlistRatingValue",
+      ) as HTMLInputElement;
+      const commentInput = document.getElementById(
+        "playlistComment",
+      ) as HTMLTextAreaElement;
+
+      const rating = Number(ratingValueInput?.value || 5);
+      const comment = commentInput?.value || "";
+
+      try {
+        const res = await fetch("/api/playlist/reviews", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rating, comment }),
+        });
+
+        if (res.ok) {
+          localStorage.setItem("pikutara_playlist_reviewed", "true");
+          hasReviewed = true;
+          updateStateVisibility();
+          alert("Mila esker baloratzeagatik! Orain zure abesti gogokoenak proposatu ditzakezu.");
+        } else {
+          const data = await res.json();
+          alert(data.error || "Errorea balorazioa bidaltzean.");
+        }
+      } catch (err) {
+        alert("Ezin izan da zerbitzariarekin konektatu.");
+      }
+    });
+  }
+
+  // URL Validation & Form Submission
+  const songForm = document.getElementById("songForm") as HTMLFormElement;
+  const songUrlInput = document.getElementById("songUrl") as HTMLInputElement;
+  const songTitleInput = document.getElementById("songTitle") as HTMLInputElement;
+  const songArtistInput = document.getElementById("songArtist") as HTMLInputElement;
+  const songUserInput = document.getElementById("songUser") as HTMLInputElement;
+  const songCommentInput = document.getElementById("songComment") as HTMLTextAreaElement;
+  const urlError = document.getElementById("urlError");
+  const musicSuccess = document.getElementById("musicSuccess");
+  const proposeAnother = document.getElementById("proposeAnother");
+
+  if (songForm && songUrlInput && urlError && musicSuccess) {
+    songForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const url = songUrlInput.value.trim();
+      urlError.style.display = "none";
+
+      // 1. Check if playlist or album
+      const isPlaylist =
+        url.includes("/playlist/") ||
+        url.includes("/playlists/") ||
+        url.includes("list=") ||
+        url.includes("/album/");
+      if (isPlaylist) {
+        urlError.textContent =
+          "Mesedez, sartu abesti baten esteka zuzena, ez erreprodukzio-zerrenda edo album bat.";
+        urlError.style.display = "block";
+        songUrlInput.focus();
+        return;
+      }
+
+      // 2. Validate Spotify/YouTube song patterns
+      const spotifySongRegex =
+        /^(https?:\/\/)?(open\.spotify\.com\/(?:[a-zA-Z0-9_-]+\/)?track\/)[a-zA-Z0-9]+/;
+
+      const youtubeSongRegex =
+        /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}/;
+
+      const isSpotify = spotifySongRegex.test(url);
+      const isYoutube = youtubeSongRegex.test(url);
+
+      if (!isSpotify && !isYoutube) {
+        urlError.textContent =
+          "URL ez da baliozkoa. Spotify abesti esteka edo YouTubeko bideo esteka bat izan behar du.";
+        urlError.style.display = "block";
+        songUrlInput.focus();
+        return;
+      }
+
+      // 3. API Submission
+      const submitBtn = songForm.querySelector("button[type='submit']") as HTMLButtonElement;
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="animation: spin 1s linear infinite; display: inline-block; width: 1.25rem; height: 1.25rem; vertical-align: middle; margin-right: 8px;">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="opacity: 0.25;"></circle>
+          <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" style="opacity: 0.75;"></path>
+        </svg>
+        Bidaltzen...
+      `;
+
+      try {
+        const payload = {
+          url: url,
+          title: songTitleInput.value.trim(),
+          artist: songArtistInput.value.trim(),
+          submittedBy: songUserInput.value.trim(),
+          comment: songCommentInput?.value.trim() || ''
+        };
+
+        const res = await fetch("/api/musika/songs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          songForm.style.display = "none";
+          musicSuccess.style.display = "block";
+        } else {
+          const data = await res.json();
+          alert(data.error || "Errorea gertatu da abestia bidaltzean.");
+        }
+      } catch (err) {
+        alert("Ezin izan da zerbitzariarekin konektatu.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    });
+
+    if (proposeAnother) {
+      proposeAnother.addEventListener("click", () => {
+        songForm.reset();
+        musicSuccess.style.display = "none";
+        songForm.style.display = "flex";
+      });
+    }
+  }
+
+  // Dynamic Songs & Chart
+  const songsListContainer = document.getElementById("songsList");
+  let genreChartInstance: any = null;
+  let hierarchy: Record<string, string> = {};
+  let chartPath: string[] = [];
+  let allAcceptedSongs: any[] = [];
+
+  let selectedGenre = 'all';
+  let displayedSongsLimit = 10;
+
+  const customSelectDropdown = document.getElementById("customSelectDropdown");
+  const customSelectTrigger = document.getElementById("customSelectTrigger");
+  const selectedGenreNameEl = document.getElementById("selectedGenreName");
+  const loadMoreContainer = document.getElementById("loadMoreContainer");
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+  const displayedCountEl = document.getElementById("displayedCount");
+  const totalMatchingCountEl = document.getElementById("totalMatchingCount");
+
+  function selectGenreOption(value: string, label: string) {
+    selectedGenre = value;
+    displayedSongsLimit = 10;
+    
+    if (selectedGenreNameEl) {
+      selectedGenreNameEl.textContent = label;
+    }
+    
+    if (customSelectDropdown) {
+      customSelectDropdown.style.display = "none";
+    }
+    
+    if (customSelectTrigger) {
+      customSelectTrigger.classList.remove("active");
+      if (value === 'all') {
+        customSelectTrigger.style.removeProperty('--trigger-color');
+      } else {
+        customSelectTrigger.style.setProperty('--trigger-color', getGenreColorRaw(value));
+      }
+    }
+    
+    const allItems = document.querySelectorAll(".dropdown-item");
+    allItems.forEach(item => {
+      if ((item as HTMLElement).dataset.value === value) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    renderSongsList();
+  }
+
+  function getGenrePath(genre: string): string[] {
+    if (!genre) return [];
+    const pathList = [genre.trim()];
+    let current = genre.trim();
+    const maxDepth = 10;
+    let depth = 0;
+    while (hierarchy[current.toLowerCase()] && depth < maxDepth) {
+      current = hierarchy[current.toLowerCase()].trim();
+      pathList.push(current);
+      depth++;
+    }
+    return pathList.reverse(); // returns [root, ..., leaf]
+  }
+
+  function hashString(str: string): number {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+  }
+
+  function getGenreColorRaw(genreName: string): string {
+    if (!genreName) return '340, 80%, 50%';
+    const lowerName = genreName.toLowerCase().trim();
+    if (lowerName === 'bestelakoak') {
+      return '0, 0%, 55%';
+    }
+    
+    const path = getGenrePath(genreName);
+    const root = path.length > 0 ? path[0] : genreName;
+    
+    const rootHash = hashString(root.toLowerCase().trim());
+    let hue = Math.abs(rootHash % 360);
+    
+    const fullHash = hashString(lowerName);
+    if (root.toLowerCase().trim() !== lowerName) {
+      const shift = (fullHash % 50) - 25;
+      hue = (hue + shift + 360) % 360;
+    }
+    
+    const saturation = 80 - (Math.abs(fullHash) % 15);
+    const lightness = 48 + (Math.abs(fullHash) % 10);
+    
+    return `${hue}, ${saturation}%, ${lightness}%`;
+  }
+
+  function songMatchesGenre(song: any, targetGenre: string): boolean {
+    if (targetGenre === 'all') return true;
+    if (!song.genres || !Array.isArray(song.genres)) return false;
+
+    return song.genres.some((g: string) => {
+      const path = getGenrePath(g);
+      return path.some(p => p.toLowerCase() === targetGenre.toLowerCase());
+    });
+  }
+
+  function renderSongsList() {
+    if (!songsListContainer) return;
+
+    let filtered = allAcceptedSongs;
+    if (selectedGenre !== 'all') {
+      filtered = allAcceptedSongs.filter(song => songMatchesGenre(song, selectedGenre));
+    }
+
+    const totalMatching = filtered.length;
+    const songsToDisplay = filtered.slice(0, displayedSongsLimit);
+
+    if (songsToDisplay.length === 0) {
+      songsListContainer.innerHTML = '<p style="color: var(--pik-text-muted);">Ez da abestirik aurkitu genero honekin.</p>';
+      if (loadMoreContainer) loadMoreContainer.style.display = "none";
+      if (displayedCountEl) displayedCountEl.textContent = "0";
+      if (totalMatchingCountEl) totalMatchingCountEl.textContent = "0";
+      return;
+    }
+
+    songsListContainer.innerHTML = '';
+
+    songsToDisplay.forEach((song: any) => {
+      const card = document.createElement("div");
+      card.className = "pik-card song-card";
+
+      let chipsHtml = '';
+      if (song.genres && Array.isArray(song.genres) && song.genres.length > 0) {
+        chipsHtml = '<div class="genre-chips">' + song.genres.map((g: string) => `<span class="genre-chip" style="--chip-color: ${getGenreColorRaw(g)}">${g}</span>`).join('') + '</div>';
+      }
+
+      const submittersStr = song.submitters && Array.isArray(song.submitters) ? song.submitters.join(', ') : 'Ezezaguna';
+      const commentsHtml = song.comments && Array.isArray(song.comments) && song.comments.length > 0
+        ? song.comments.map((c: string) => `<p class="user-comment">"${c}"</p>`).join('')
+        : '';
+
+      card.innerHTML = `
+        <div class="song-card-inner">
+          <div class="song-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="song-music-icon"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          </div>
+          <div class="song-main-details">
+            <div class="song-header">
+              <span class="submitted-by">Proposatzailea: <strong>${submittersStr}</strong></span>
+            </div>
+            <h4>${song.real_title || 'Ezezaguna'}</h4>
+            <p class="artist-name">${song.real_artist || 'Ezezaguna'}</p>
+            ${chipsHtml}
+            ${commentsHtml}
+          </div>
+        </div>
+      `;
+      songsListContainer.appendChild(card);
+    });
+
+    if (displayedCountEl) displayedCountEl.textContent = String(songsToDisplay.length);
+    if (totalMatchingCountEl) totalMatchingCountEl.textContent = String(totalMatching);
+
+    if (loadMoreContainer) {
+      if (totalMatching > displayedSongsLimit) {
+        loadMoreContainer.style.display = "block";
+      } else {
+        loadMoreContainer.style.display = "none";
+      }
+    }
+  }
+
+  async function fetchAcceptedSongs() {
+    if (!songsListContainer) return;
+    try {
+      // Fetch hierarchy map first
+      try {
+        const hRes = await fetch("/api/musika/genre-hierarchy");
+        if (hRes.ok) {
+          hierarchy = await hRes.json();
+        }
+      } catch (e) {
+        console.error("Error fetching genre hierarchy:", e);
+      }
+
+      const res = await fetch("/api/musika/songs");
+      if (!res.ok) throw new Error("API Error");
+      allAcceptedSongs = await res.json();
+
+      if (allAcceptedSongs.length === 0) {
+        songsListContainer.innerHTML = '<p style="color: var(--pik-text-muted);">Oraindik ez dago abesti onarturik.</p>';
+        return;
+      }
+
+      // Group genres by root for hierarchical selection
+      const rootGroups: Record<string, Set<string>> = {};
+      allAcceptedSongs.forEach((song: any) => {
+        if (song.genres && Array.isArray(song.genres)) {
+          song.genres.forEach((g: string) => {
+            if (g && g.trim()) {
+              const path = getGenrePath(g.trim());
+              const root = path[0] || g.trim();
+              if (!rootGroups[root]) {
+                rootGroups[root] = new Set<string>();
+              }
+              if (g.trim().toLowerCase() !== root.toLowerCase()) {
+                rootGroups[root].add(g.trim());
+              }
+            }
+          });
+        }
+      });
+
+      if (customSelectDropdown) {
+        customSelectDropdown.innerHTML = '';
+        
+        // Add "All" option
+        const allOption = document.createElement("div");
+        allOption.className = "dropdown-item main-item active";
+        allOption.dataset.value = "all";
+        allOption.style.setProperty('--item-color', '340, 80%, 50%');
+        allOption.innerHTML = `<span>Guztiak (Denak erakutsi)</span> <span class="item-count">(${allAcceptedSongs.length})</span>`;
+        allOption.addEventListener("click", () => selectGenreOption("all", "Guztiak (Denak erakutsi) (" + allAcceptedSongs.length + ")"));
+        customSelectDropdown.appendChild(allOption);
+        
+        const sortedRoots = Object.keys(rootGroups).sort((a, b) => a.localeCompare(b));
+        sortedRoots.forEach(root => {
+          const subSet = rootGroups[root];
+          const rootCount = allAcceptedSongs.filter(s => songMatchesGenre(s, root)).length;
+          
+          const groupContainer = document.createElement("div");
+          groupContainer.className = "dropdown-group";
+          
+          const groupHeader = document.createElement("div");
+          groupHeader.className = "dropdown-group-header";
+          groupHeader.style.setProperty('--group-color', getGenreColorRaw(root));
+          groupHeader.textContent = root.toUpperCase();
+          groupContainer.appendChild(groupHeader);
+          
+          const parentOpt = document.createElement("div");
+          parentOpt.className = "dropdown-item parent-item";
+          parentOpt.dataset.value = root;
+          parentOpt.style.setProperty('--item-color', getGenreColorRaw(root));
+          parentOpt.innerHTML = `<span>• Guztiak / Todo ${root}</span> <span class="item-count">(${rootCount})</span>`;
+          parentOpt.addEventListener("click", () => selectGenreOption(root, `${root} (${rootCount})`));
+          groupContainer.appendChild(parentOpt);
+          
+          if (subSet.size > 0) {
+            const sortedSubs = Array.from(subSet).sort((a, b) => a.localeCompare(b));
+            sortedSubs.forEach(sub => {
+              const subCount = allAcceptedSongs.filter(s => songMatchesGenre(s, sub)).length;
+              const subOpt = document.createElement("div");
+              subOpt.className = "dropdown-item sub-item";
+              subOpt.dataset.value = sub;
+              subOpt.style.setProperty('--item-color', getGenreColorRaw(sub));
+              subOpt.innerHTML = `<span>${sub}</span> <span class="item-count">(${subCount})</span>`;
+              subOpt.addEventListener("click", () => selectGenreOption(sub, `${sub} (${subCount})`));
+              groupContainer.appendChild(subOpt);
+            });
+          }
+          
+          customSelectDropdown.appendChild(groupContainer);
+        });
+      }
+
+      renderSongsList();
+
+      // Initially compute and render the chart at root level []
+      chartPath = [];
+      updateChartAndTitle();
+
+    } catch (err) {
+      console.error(err);
+      songsListContainer.innerHTML = '<p style="color: var(--pik-red);">Ezin izan dira abestiak kargatu.</p>';
+    }
+  }
+
+  // Setup custom select dropdown event listeners
+  if (customSelectTrigger && customSelectDropdown) {
+    customSelectTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = customSelectDropdown.style.display === "block";
+      customSelectDropdown.style.display = isOpen ? "none" : "block";
+      customSelectTrigger.classList.toggle("active", !isOpen);
+    });
+
+    document.addEventListener("click", () => {
+      customSelectDropdown.style.display = "none";
+      customSelectTrigger.classList.remove("active");
+    });
+  }
+
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener("click", () => {
+      displayedSongsLimit += 10;
+      renderSongsList();
+    });
+  }
+
+  function getRootGenresBreakdown() {
+    const counts: Record<string, number> = {};
+    allAcceptedSongs.forEach((song: any) => {
+      if (song.genres && Array.isArray(song.genres)) {
+        song.genres.forEach((g: string) => {
+          const gPath = getGenrePath(g);
+          const rootGen = gPath.length > 0 ? gPath[0] : null;
+          if (rootGen) {
+            counts[rootGen] = (counts[rootGen] || 0) + 1;
+          }
+        });
+      }
+    });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const main = new Set<string>();
+    const others = new Set<string>();
+    sorted.forEach(([genre, count], idx) => {
+      if (idx < 8) {
+        main.add(genre.toLowerCase());
+      } else {
+        others.add(genre.toLowerCase());
+      }
+    });
+    return { main, others };
+  }
+
+  function updateChartAndTitle() {
+    // Update breadcrumbs UI
+    const breadcrumbContainer = document.getElementById("chartBreadcrumbContainer");
+    const breadcrumbsSpan = document.getElementById("chartBreadcrumbs");
+    if (breadcrumbContainer && breadcrumbsSpan) {
+      if (chartPath.length > 0) {
+        breadcrumbContainer.style.display = "flex";
+        breadcrumbsSpan.innerText = "Nagusia > " + chartPath.join(" > ");
+      } else {
+        breadcrumbContainer.style.display = "none";
+      }
+    }
+
+    // Compute counts based on current chartPath
+    const rootBreakdown = getRootGenresBreakdown();
+    const genreCounts: Record<string, number> = {};
+    
+    allAcceptedSongs.forEach((song: any) => {
+      if (song.genres && Array.isArray(song.genres)) {
+        song.genres.forEach((g: string) => {
+          const gPath = getGenrePath(g);
+          if (gPath.length === 0) return;
+          
+          let matches = false;
+          let category = "";
+          
+          if (chartPath.length === 0) {
+            matches = true;
+            const rootGen = gPath[0];
+            if (rootBreakdown.main.has(rootGen.toLowerCase())) {
+              category = rootGen;
+            } else {
+              category = "Bestelakoak";
+            }
+          } else if (chartPath[0] === "Bestelakoak") {
+            if (chartPath.length === 1) {
+              if (rootBreakdown.others.has(gPath[0].toLowerCase())) {
+                matches = true;
+                category = gPath[0];
+              }
+            } else {
+              const subPath = chartPath.slice(1);
+              let subMatches = true;
+              for (let i = 0; i < subPath.length; i++) {
+                if (i >= gPath.length || gPath[i].toLowerCase() !== subPath[i].toLowerCase()) {
+                  subMatches = false;
+                  break;
+                }
+              }
+              if (subMatches) {
+                matches = true;
+                const nextIndex = subPath.length;
+                category = nextIndex < gPath.length ? gPath[nextIndex] : gPath[gPath.length - 1];
+              }
+            }
+          } else {
+            let pathMatches = true;
+            for (let i = 0; i < chartPath.length; i++) {
+              if (i >= gPath.length || gPath[i].toLowerCase() !== chartPath[i].toLowerCase()) {
+                pathMatches = false;
+                break;
+              }
+            }
+            if (pathMatches) {
+              matches = true;
+              const nextIndex = chartPath.length;
+              category = nextIndex < gPath.length ? gPath[nextIndex] : gPath[gPath.length - 1];
+            }
+          }
+          
+          if (matches && category) {
+            let finalCategory = category;
+            if (chartPath.length > 0) {
+              const currentParent = chartPath[chartPath.length - 1];
+              if (finalCategory.toLowerCase() === currentParent.toLowerCase()) {
+                finalCategory = `${finalCategory} (orokorra)`;
+              }
+            }
+            genreCounts[finalCategory] = (genreCounts[finalCategory] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    renderChart(genreCounts);
+  }
+
+  // Set up back button listener
+  document.getElementById("chartBackButton")?.addEventListener("click", () => {
+    if (chartPath.length > 0) {
+      chartPath.pop();
+      updateChartAndTitle();
+    }
+  });
+
+  function renderChart(genreCounts: Record<string, number>) {
+    const ctx = document.getElementById('genreChart') as HTMLCanvasElement;
+    if (!ctx) return;
+
+    let totalOccurrences = 0;
+    for (const count of Object.values(genreCounts)) {
+      totalOccurrences += count;
+    }
+
+    if (totalOccurrences === 0) return;
+
+    const sortedGenres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1]);
+    const labels = sortedGenres.map(([g]) => g);
+    const data = sortedGenres.map(([_, c]) => c);
+
+    if (genreChartInstance) {
+      genreChartInstance.destroy();
+    }
+
+    // Generate stable HSL colors for each label based on name and hierarchy
+    const colors = labels.map((label: string) => `hsl(${getGenreColorRaw(label)})`);
+
+    genreChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colors,
+          borderColor: '#0c020c',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#ffffff' }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context: any) => {
+                const label = context.label || '';
+                const value = context.raw || 0;
+                const dataset = context.dataset;
+                const total = dataset.data.reduce((acc: number, val: number) => acc + val, 0);
+                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+                return `${label}: ${percentage}%`;
+              },
+              afterLabel: (context: any) => {
+                const clickedLabel = context.label;
+                const lowerLabel = clickedLabel.toLowerCase();
+                const isOtros = clickedLabel === "Bestelakoak";
+                const hasChildren = Object.values(hierarchy).some(parent => parent.toLowerCase() === lowerLabel);
+                return (isOtros || hasChildren) ? ' (Klik egin xehetasunak ikusteko 🔍)' : '';
+              }
+            }
+          }
+        },
+        onHover: (event: any, chartElements: any) => {
+          if (event.native && event.native.target) {
+            const target = event.native.target as HTMLElement;
+            if (chartElements.length > 0) {
+              const index = chartElements[0].index;
+              const clickedLabel = genreChartInstance.data.labels[index];
+              const isOtros = clickedLabel === "Bestelakoak";
+              const lowerLabel = clickedLabel.toLowerCase();
+              const hasChildren = Object.values(hierarchy).some(parent => parent.toLowerCase() === lowerLabel);
+              if (isOtros || hasChildren) {
+                target.style.cursor = 'pointer';
+                return;
+              }
+            }
+            target.style.cursor = 'default';
+          }
+        },
+        onClick: (event: any, elements: any) => {
+          if (elements.length > 0) {
+            const firstElement = elements[0];
+            const index = firstElement.index;
+            const clickedLabel = genreChartInstance.data.labels[index];
+            const isOtros = clickedLabel === "Bestelakoak";
+            const lowerLabel = clickedLabel.toLowerCase();
+            const hasChildren = Object.values(hierarchy).some(parent => parent.toLowerCase() === lowerLabel);
+            
+            if (isOtros || hasChildren) {
+              chartPath.push(clickedLabel);
+              updateChartAndTitle();
+            }
+          }
+        }
+      }
+    });
+  }
+
+  fetchAcceptedSongs();
+</script>
+
+<style is:global>
+  .page-layout {
+    padding: 4rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px var(--pik-purple-glow);
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--pik-text-muted);
+  }
+
+  /* Playlist Rating Card */
+  .playlist-rating-card {
+    border-color: var(--pik-red);
+    margin-bottom: 4rem;
+    padding: 3rem;
+  }
+
+  .playlist-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .playlist-badge {
+    background-color: var(--pik-red);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .playlist-info-block h2 {
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .playlist-desc {
+    color: var(--pik-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  /* Playlist Rating block */
+  .playlist-rate-form-block h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .rate-desc {
+    font-size: 0.95rem;
+    color: var(--pik-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .playlist-rate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .p-star-btn {
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    color: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .p-star-btn:hover,
+  .p-star-btn.selected {
+    color: #ffff00;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+  }
+
+  .p-star-btn:hover ~ .p-star-btn {
+    color: rgba(255, 255, 255, 0.15);
+    text-shadow: none;
+  }
+
+  /* Music Grid Layout */
+  .music-portal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .music-portal-grid.voted-state {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Form section */
+  .submit-section {
+    border-color: rgba(255, 0, 0, 0.3);
+    padding: 2.5rem;
+  }
+
+  .submit-section h3 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-desc {
+    font-size: 0.95rem;
+    color: var(--pik-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .song-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--pik-text);
+  }
+
+  .error-text {
+    color: #ff3333;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+  }
+
+  .privacy-notice-box {
+    display: flex;
+    gap: 0.8rem;
+    padding: 1rem;
+    background-color: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 6px;
+    align-items: center;
+  }
+
+  .privacy-icon {
+    font-size: 1.2rem;
+  }
+
+  .privacy-text {
+    font-size: 0.85rem;
+    color: var(--pik-text-muted);
+    line-height: 1.4;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* Success alert */
+  .success-alert {
+    padding: 2rem;
+    background-color: rgba(87, 0, 87, 0.2);
+    border: 1px solid var(--pik-red);
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .success-alert h4 {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-alert p {
+    color: var(--pik-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* Songs List section */
+  .songs-list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .section-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(87, 0, 87, 0.3);
+    padding-bottom: 0.8rem;
+  }
+
+  .section-title-bar h3 {
+    font-size: 1.6rem;
+    color: #fff;
+  }
+
+  .active-badge {
+    background-color: rgba(255, 0, 0, 0.15);
+    border: 1px solid var(--pik-red);
+    color: var(--pik-red);
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .songs-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .proposed-songs-container {
+    margin-top: 4rem;
+  }
+
+  .chart-card {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .music-portal-grid.voted-state .chart-card {
+    max-width: none;
+    margin: 0;
+  }
+
+  /* Premium Song Card Design */
+  .song-card {
+    background: rgba(43, 6, 43, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 0, 85, 0.2);
+    border-left: 4px solid var(--pik-red);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .song-card::before {
+    display: none; /* override default card top border line */
+  }
+
+  .song-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(255, 0, 85, 0.45);
+    border-left-color: #ff3366;
+    box-shadow: 0 12px 32px rgba(255, 0, 85, 0.2), 0 0 25px rgba(156, 0, 156, 0.3);
+  }
+
+  .song-card-inner {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .song-icon-container {
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.08) 0%, rgba(156, 0, 156, 0.08) 100%);
+    border: 1px solid rgba(255, 51, 102, 0.3);
+    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 10px rgba(255, 0, 85, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .song-card:hover .song-icon-container {
+    background: rgba(255, 0, 85, 0.15);
+    border-color: rgba(255, 51, 102, 0.6);
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.4);
+  }
+
+  .song-music-icon {
+    color: #ff3366;
+    filter: drop-shadow(0 0 4px rgba(255, 51, 102, 0.5));
+    transition: all 0.3s ease;
+  }
+
+  .song-card:hover .song-music-icon {
+    color: #ff00ff;
+    filter: drop-shadow(0 0 8px #ff00ff);
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .song-main-details {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .song-header {
+    margin-bottom: 0.6rem;
+  }
+
+  .submitted-by {
+    font-size: 0.75rem;
+    color: var(--pik-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: inline-block;
+  }
+
+  .submitted-by strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .song-card h4 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .artist-name {
+    font-size: 1.05rem;
+    color: var(--pik-purple-light);
+    font-weight: 750;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .genre-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .genre-chip {
+    background-color: hsla(var(--chip-color, 340, 80%, 50%), 0.12);
+    border: 1px solid hsla(var(--chip-color, 340, 80%, 50%), 0.35);
+    color: hsl(var(--chip-color, 340, 80%, 50%));
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px hsla(var(--chip-color, 340, 80%, 50%), 0.15);
+  }
+
+  .song-card:hover .genre-chip {
+    background-color: hsla(var(--chip-color, 340, 80%, 50%), 0.25);
+    border-color: hsla(var(--chip-color, 340, 80%, 50%), 0.7);
+    color: #ffffff;
+    box-shadow: 0 2px 10px hsla(var(--chip-color, 340, 80%, 50%), 0.35);
+  }
+
+  .user-comment {
+    font-size: 0.85rem;
+    color: var(--pik-text-muted);
+    font-style: italic;
+    background-color: rgba(12, 2, 12, 0.35);
+    padding: 0.6rem 1rem;
+    border-left: 3px solid var(--pik-red);
+    margin-top: 0.75rem;
+    border-radius: 0 8px 8px 0;
+    line-height: 1.45;
+    line-height: 1.4;
+  }
+
+  /* Breadcrumb & Chart Details styles */
+  .chart-title-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .chart-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  #chartBreadcrumbContainer {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    margin-top: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: fit-content;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  #chartBackButton {
+    background: linear-gradient(135deg, var(--pik-purple) 0%, var(--pik-red) 100%);
+    border: none;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 20px;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+  }
+
+  #chartBackButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+    background: linear-gradient(135deg, var(--pik-purple-light) 0%, var(--pik-red) 100%);
+  }
+
+  #chartBreadcrumbs {
+    font-weight: 600;
+    color: var(--pik-purple-light);
+    text-shadow: 0 0 10px rgba(156, 0, 156, 0.3);
+  }
+
+  .chart-info-prompt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .prompt-icon {
+    font-size: 1.25rem;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.5));
+  }
+
+  .prompt-text {
+    font-size: 0.85rem;
+    color: var(--pik-text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsive styling */
+  @media (max-width: 992px) {
+    .playlist-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .music-portal-grid {
+      grid-template-columns: 1fr !important; /* Forza zutabe bakarra */
+      gap: 3rem;
+    }
+
+    .music-portal-grid.voted-state {
+      grid-template-columns: 1fr !important; /* HAU DA GAKOA: Pantaila txikietan ez du utziko 1fr 1fr izaten */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Songs Filter Bar */
+  .songs-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(87, 0, 87, 0.2);
+    border-radius: 8px;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .filter-label {
+    font-weight: 700;
+    color: var(--pik-text-muted);
+    font-size: 1rem;
+  }
+
+  /* Custom Select Component */
+  .custom-select-wrapper {
+    position: relative;
+    user-select: none;
+  }
+
+  .pik-select-trigger {
+    background-color: rgba(12, 2, 12, 0.85);
+    border: 2px solid hsl(var(--trigger-color, 280, 80%, 40%));
+    border-radius: 8px;
+    color: #fff;
+    padding: 0.6rem 2.8rem 0.6rem 1.2rem;
+    font-family: var(--pik-font);
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px hsla(var(--trigger-color, 280, 80%, 40%), 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 260px;
+    position: relative;
+    text-align: left;
+  }
+
+  .pik-select-trigger:focus, .pik-select-trigger.active {
+    outline: none;
+    border-color: hsl(var(--trigger-color, 340, 80%, 50%));
+    box-shadow: 0 0 15px hsla(var(--trigger-color, 340, 80%, 50%), 0.45);
+  }
+
+  .trigger-arrow {
+    font-size: 0.8rem;
+    color: hsl(var(--trigger-color, 340, 80%, 50%));
+    position: absolute;
+    right: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .pik-select-trigger.active .trigger-arrow {
+    transform: rotate(180deg);
+  }
+
+  .pik-select-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    min-width: 280px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: rgba(15, 4, 15, 0.96);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 51, 102, 0.3);
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 51, 102, 0.15);
+    scrollbar-width: thin;
+    scrollbar-color: var(--pik-red) rgba(0,0,0,0.3);
+    animation: dropdownFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pik-select-dropdown::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .pik-select-dropdown::-webkit-scrollbar-thumb {
+    background-color: var(--pik-red);
+    border-radius: 3px;
+  }
+
+  .dropdown-group {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 6px 0;
+  }
+
+  .dropdown-group:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown-group-header {
+    font-size: 0.75rem;
+    font-weight: 850;
+    color: hsl(var(--group-color, 340, 80%, 50%));
+    padding: 6px 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.95;
+    text-shadow: 0 0 8px hsla(var(--group-color, 340, 80%, 50%), 0.4);
+  }
+
+  .dropdown-item {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    color: #eee;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+
+  .dropdown-item:hover {
+    background-color: hsla(var(--item-color, 340, 80%, 50%), 0.12);
+    color: hsl(var(--item-color, 340, 80%, 50%));
+    padding-left: 20px;
+  }
+
+  .dropdown-item.active {
+    background-color: hsla(var(--item-color, 340, 80%, 50%), 0.2);
+    color: #fff;
+    font-weight: bold;
+    border-left: 3px solid hsl(var(--item-color, 340, 80%, 50%));
+  }
+
+  .dropdown-item.main-item {
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 16px;
+  }
+
+  .dropdown-item.parent-item {
+    font-weight: 650;
+    color: #ddd;
+  }
+
+  .dropdown-item.sub-item {
+    padding-left: 24px;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+
+  .dropdown-item.sub-item:hover {
+    padding-left: 28px;
+  }
+
+  .item-count {
+    font-size: 0.8rem;
+    color: var(--pik-text-muted);
+    font-weight: 500;
+  }
+
+  @keyframes dropdownFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .songs-count-badge {
+    font-size: 1rem;
+    color: var(--pik-text-muted);
+    background: rgba(87, 0, 87, 0.15);
+    border: 1px solid var(--pik-purple);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+  }
+
+  .badge-value {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .load-more-container {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .load-more-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+</style>
