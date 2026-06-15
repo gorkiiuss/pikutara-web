@@ -10,6 +10,8 @@ dist/
 *.sqlite-shm
 *.sqlite-wal
 data/*.sqlite
+data/cookies.txt
+cookies.txt
 database.sqlite
 
 # User uploaded files
