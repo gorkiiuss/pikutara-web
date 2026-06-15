@@ -1624,6 +1624,23 @@ async function deleteBazkaria(id) {
   }
 }
 
+async function resendBazkariaEmail(id) {
+  if (!confirm('Ziur izen-ematerako posta elektronikoa berriz bidali nahi duzula?')) return;
+  try {
+    const res = await fetch('/api/bazkaria/' + id + '/resend-email', {
+      method: 'POST'
+    });
+    if (res.ok) {
+      alert('Posta ondo birbidali da! (Email reenviado correctamente)');
+    } else {
+      const data = await res.json();
+      alert('Errorea bidaltzean: ' + (data.error || 'Errore ezezaguna'));
+    }
+  } catch (e) {
+    alert('Sareko errorea');
+  }
+}
+
 async function exportBazkaria() {
   try {
     const res = await fetch('/api/bazkaria/registrations');
