@@ -319,12 +319,20 @@ function initializeSchema() {
           ordainketa_modua TEXT NOT NULL,
           oharrak TEXT,
           mote TEXT,
+          is_paid INTEGER DEFAULT 0,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (konpartsakide_id) REFERENCES konpartsakideak(id)
         )
       `, (err) => {
-        if (err) console.error('Error creating bazkaria_registrations table:', err.message);
-        else console.log('Bazkaria registrations table initialized successfully.');
+        if (err) {
+          console.error('Error creating bazkaria_registrations table:', err.message);
+        } else {
+          console.log('Bazkaria registrations table initialized successfully.');
+          // Add is_paid column to existing databases
+          db.run("ALTER TABLE bazkaria_registrations ADD COLUMN is_paid INTEGER DEFAULT 0", (alterErr) => {
+            // Ignore if the column already exists
+          });
+        }
       });
 
       // Konpartsakideak table

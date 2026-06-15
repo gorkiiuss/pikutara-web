@@ -171,4 +171,22 @@ export class BazkariaController {
       res.status(500).json({ error: 'Errorea ezabatzean.' });
     }
   }
+
+  static async togglePaidRegistration(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const registration = await registrationRepo.findById(Number(id));
+      if (!registration) {
+        res.status(404).json({ error: 'Izen-ematea ez da aurkitu (No encontrado).' });
+        return;
+      }
+      
+      const newPaidStatus = registration.is_paid === 1 ? 0 : 1;
+      await registrationRepo.updatePaymentStatus(Number(id), newPaidStatus);
+      res.json({ success: true, is_paid: newPaidStatus });
+    } catch (error: any) {
+      console.error('Errorea ordainketa egoera aldatzean:', error);
+      res.status(500).json({ error: 'Errorea egoera aldatzean.' });
+    }
+  }
 }

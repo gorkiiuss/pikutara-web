@@ -4,7 +4,12 @@ import { query, run, get } from '../../../../shared/database.js';
 
 export class SQLiteRegistrationRepository implements RegistrationRepository {
   async findAll(): Promise<Registration[]> {
-    return query('SELECT * FROM bazkaria_registrations ORDER BY created_at DESC');
+    return query(`
+      SELECT r.*, k.izena as konpartsakide_izena
+      FROM bazkaria_registrations r
+      LEFT JOIN konpartsakideak k ON r.konpartsakide_id = k.id
+      ORDER BY r.created_at DESC
+    `);
   }
 
   async findById(id: number): Promise<Registration | null> {
@@ -50,6 +55,10 @@ export class SQLiteRegistrationRepository implements RegistrationRepository {
         r.mote || null
       ]
     );
+  }
+
+  async updatePaymentStatus(id: number, isPaid: number): Promise<void> {
+    await run('UPDATE bazkaria_registrations SET is_paid = ? WHERE id = ?', [isPaid, id]);
   }
 
   async delete(id: number): Promise<void> {
