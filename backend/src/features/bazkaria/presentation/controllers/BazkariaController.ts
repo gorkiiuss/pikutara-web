@@ -188,7 +188,7 @@ export class BazkariaController {
         res.status(404).json({ error: 'Izen-ematea ez da aurkitu (No encontrado).' });
         return;
       }
-      
+
       const newPaidStatus = registration.is_paid === 1 ? 0 : 1;
       await registrationRepo.updatePaymentStatus(Number(id), newPaidStatus);
       res.json({ success: true, is_paid: newPaidStatus });
@@ -271,7 +271,7 @@ export class BazkariaController {
       const mailOptions = {
         from: `"Pikutara Gazte Konpartsa" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: `[Kopia] ✅ Bazkarirako izen-ematea baieztatuta - Gazte Eguna`,
+        subject: `✅ Bazkarirako izen-ematea baieztatuta - Gazte Eguna`,
         html: `
           <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
             <div style="background-color: #700070; padding: 20px; text-align: center;">
@@ -279,7 +279,7 @@ export class BazkariaController {
             </div>
             <div style="padding: 30px;">
               <p>Kaixo <strong>${izena}</strong>,</p>
-              <p>Hona heyemen zure bazkarirako izen-ematearen kopia berri bat:</p>
+              <p>Hona hemen zure bazkarirako izen-ematearen kopia berri bat:</p>
               
               <div style="background-color: #fff4f4; border-left: 4px solid #ff0000; padding: 15px; margin: 20px 0;">
                 <ul style="list-style: none; padding: 0; margin: 0;">
@@ -289,7 +289,7 @@ export class BazkariaController {
                 </ul>
               </div>
 
-              <h3 style="color: #700070; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px;">Ordainketa (Pago)</h3>
+              <h3 style="color: #700070; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px;">Ordainketa</h3>
               ${ordainketaMezua}
 
               <p style="margin-top: 30px;">Eskerrik asko gazte egunean parte hartzeagatik.<br>Laster arte!</p>

@@ -8,7 +8,7 @@ adminHierarchyRaw.forEach(h => {
 
 async function songAction(id, status) {
   try {
-    const row = document.getElementById('song-row-' + id);
+    const row = document.getElementById('song-group-' + id);
     const genres = JSON.parse(row.getAttribute('data-genres') || '[]');
     const res = await fetch('/api/admin/songs/' + id + '/tinder-action', {
       method: 'PUT',
