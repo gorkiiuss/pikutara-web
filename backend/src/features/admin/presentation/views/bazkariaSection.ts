@@ -66,7 +66,8 @@ export function renderBazkariaSection(bazkariRegistrations: AdminBazkariaRegistr
                       }
                     </td>
                     <td style="font-family: monospace; font-size: 0.85rem; color: #bbb;">${new Date(r.created_at).toLocaleString('eu-ES')}</td>
-                    <td>
+                    <td style="display: flex; gap: 5px;">
+                      <button class="btn" onclick="resendBazkariaEmail(${r.id})" style="padding: 0.3rem 0.6rem; font-size: 0.85rem; background: rgba(77, 166, 255, 0.2); border: 1px solid #4da6ff; color: #fff;">Posta ✉️</button>
                       <button class="btn btn-delete" onclick="deleteBazkaria(${r.id})" style="padding: 0.3rem 0.6rem; font-size: 0.85rem;">Ezabatu 🗑️</button>
                     </td>
                   </tr>
