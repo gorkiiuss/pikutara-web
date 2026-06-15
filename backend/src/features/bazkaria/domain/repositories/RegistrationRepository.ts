@@ -6,5 +6,6 @@ export interface RegistrationRepository {
   findByEmailAndName(email: string, izena: string, abizenak: string): Promise<Registration | null>;
   findByEmailAndNameAndMote(email: string, izena: string, abizenak: string, mote: string): Promise<Registration | null>;
   save(registration: Registration): Promise<void>;
+  updatePaymentStatus(id: number, isPaid: number): Promise<void>;
   delete(id: number): Promise<void>;
 }

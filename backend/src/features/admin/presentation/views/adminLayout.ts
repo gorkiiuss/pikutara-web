@@ -1,7 +1,7 @@
 import {
   AdminMeme, AdminPoster, AdminPlaylistReview, AdminSection,
   AdminPageView, AdminSong, AdminGarbageTag, AdminTagMapping,
-  AdminGenreHierarchy, AdminUser
+  AdminGenreHierarchy, AdminUser, AdminBazkariaRegistration
 } from '../../domain/models/AdminData.js';
 
 import { renderViewsSection } from './viewsSection.js';
@@ -12,6 +12,7 @@ import { renderMemesSection } from './memesSection.js';
 import { renderPostersSection } from './postersSection.js';
 import { renderReviewsSection } from './reviewsSection.js';
 import { renderUsersSection } from './usersSection.js';
+import { renderBazkariaSection } from './bazkariaSection.js';
 
 export interface AdminRenderData {
   pendingMemes: AdminMeme[];
@@ -25,6 +26,7 @@ export interface AdminRenderData {
   tagMappings: AdminTagMapping[];
   genreHierarchy: AdminGenreHierarchy[];
   allUsers: AdminUser[];
+  bazkariRegistrations: AdminBazkariaRegistration[];
 }
 
 export function renderAdminLayout(data: AdminRenderData): string {
@@ -66,6 +68,7 @@ export function renderAdminLayout(data: AdminRenderData): string {
       ${renderPostersSection(data.allPosters)}
       ${renderReviewsSection(data.allReviews)}
       ${renderUsersSection(data.allUsers)}
+      ${renderBazkariaSection(data.bazkariRegistrations)}
     </div>
   </div>
 
