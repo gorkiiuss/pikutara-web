@@ -1,5 +1,7 @@
 import { execFile } from 'child_process';
 import util from 'util';
+import fs from 'fs';
+import path from 'path';
 import { query } from '../../../../shared/database.js';
 
 const execFilePromise = util.promisify(execFile);
@@ -13,7 +15,38 @@ export class ExternalMetadataService {
     return match ? match[1] : null;
   }
 
-  static async checkYouTubeVideoType(videoId: string): Promise<{
+  private static getYtDlpPath(): string {
+    if (process.env.YT_DLP_PATH) {
+      return process.env.YT_DLP_PATH;
+    }
+    const paths = [
+      '/usr/local/bin/yt-dlp',
+      '/usr/bin/yt-dlp',
+      '/home/gorkius/.local/bin/yt-dlp',
+    ];
+    for (const p of paths) {
+      if (fs.existsSync(p)) {
+        return p;
+      }
+    }
+    return 'yt-dlp';
+  }
+
+  private static getCookiesPath(): string | null {
+    const paths = [
+      '/app/data/cookies.txt',
+      path.resolve(process.cwd(), 'data/cookies.txt'),
+      path.resolve(process.cwd(), 'backend/data/cookies.txt'),
+    ];
+    for (const p of paths) {
+      if (fs.existsSync(p)) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  private static async checkYouTubeVideoTypeInnerTubeFallback(videoId: string): Promise<{
     isValid: boolean;
     musicVideoType: string;
     title: string;
@@ -52,12 +85,8 @@ export class ExternalMetadataService {
       const musicVideoType = videoDetails.musicVideoType;
       const status = data.playabilityStatus?.status;
       
-      // If the video is unplayable or blocked (very common for bot IPs or geo-restrictions),
-      // we allow it so we do not block valid songs.
       const isPlayableOrBlocked = status !== 'OK';
 
-      // We allow ATV (Art Tracks), OMV (Official Music Videos), UGC (User Generated Content - e.g. indie releases),
-      // and OFFICIAL_SOURCE_MUSIC, or if the video playability status was blocked/unplayable.
       const isValid = 
         musicVideoType === 'MUSIC_VIDEO_TYPE_ATV' || 
         musicVideoType === 'MUSIC_VIDEO_TYPE_OMV' || 
@@ -74,12 +103,57 @@ export class ExternalMetadataService {
     } catch (err: any) {
       console.error(`Error querying InnerTube for ${videoId}:`, err.message);
       return {
-        isValid: true, // Allow it to pass as a fallback so network/API changes don't break the service
+        isValid: true,
         error: `Ezin izan da bideoa egiaztatu: ${err.message}`,
         musicVideoType: 'ERROR',
         title: '',
         author: ''
       };
+    }
+  }
+
+  static async checkYouTubeVideoType(videoId: string): Promise<{
+    isValid: boolean;
+    musicVideoType: string;
+    title: string;
+    author: string;
+    error?: string;
+  }> {
+    const url = `https://www.youtube.com/watch?v=${videoId}`;
+    const ytDlpPath = this.getYtDlpPath();
+    const cookiesPath = this.getCookiesPath();
+
+    const args = [
+      '--js-runtimes', 'node',
+      '--ignore-no-formats-error',
+      '-4',
+      '--dump-json',
+      url
+    ];
+
+    if (cookiesPath) {
+      args.unshift('--cookies', cookiesPath);
+    }
+
+    try {
+      const { stdout } = await execFilePromise(ytDlpPath, args, { timeout: 30000 });
+      const data = JSON.parse(stdout);
+
+      const categories = data.categories || [];
+      const isMusicCategory = categories.includes('Music') || categories.includes('Música');
+      const hasMusicMetadata = !!data.track || !!data.artist;
+
+      const isValid = isMusicCategory || hasMusicMetadata;
+
+      return {
+        isValid,
+        musicVideoType: isValid ? 'MUSIC_VIDEO' : 'UNKNOWN',
+        title: data.title || '',
+        author: data.uploader || data.channel || ''
+      };
+    } catch (err: any) {
+      console.warn(`yt-dlp check failed for ${videoId}, trying InnerTube fallback. Error:`, err.message);
+      return this.checkYouTubeVideoTypeInnerTubeFallback(videoId);
     }
   }
 
@@ -499,11 +573,17 @@ export class ExternalMetadataService {
         const playlistUrl = 'https://www.youtube.com/playlist?list=' + playlistId;
         
         try {
-          const { stdout } = await execFilePromise('/home/gorkius/.local/bin/yt-dlp', [
+          const ytDlpPath = this.getYtDlpPath();
+          const cookiesPath = this.getCookiesPath();
+          const args = [
             '--flat-playlist',
             '--print', 'id',
             playlistUrl
-          ], { timeout: 30000 });
+          ];
+          if (cookiesPath) {
+            args.unshift('--cookies', cookiesPath);
+          }
+          const { stdout } = await execFilePromise(ytDlpPath, args, { timeout: 30000 });
           
           const ids = stdout.split('\n').map(id => id.trim()).filter(Boolean);
           if (ids.length > 0) {
