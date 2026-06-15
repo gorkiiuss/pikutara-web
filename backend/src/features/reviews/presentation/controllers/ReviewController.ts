@@ -11,7 +11,7 @@ export class ReviewController {
     try {
       const hasVotedUseCase = new HasVoted(reviewRepository);
       const voted = await hasVotedUseCase.execute(req.ip || '');
-      res.json({ voted });
+      res.json({ voted, hasVoted: voted });
     } catch (err: any) {
       res.status(500).json({ error: err.message || 'Errorea egiaztatzean' });
     }
