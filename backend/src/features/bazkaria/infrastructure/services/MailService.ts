@@ -1,17 +1,24 @@
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+let transporter: any = null;
+
+function getTransporter() {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
   }
-});
+  return transporter;
+}
 
 export class MailService {
   static async sendMail(options: { from: string; to: string; subject: string; html: string }): Promise<void> {
     return new Promise((resolve, reject) => {
-      transporter.sendMail(options, (error: any, info: any) => {
+      getTransporter().sendMail(options, (error: any, info: any) => {
         if (error) {
           console.error('MailService: error sending email:', error);
           reject(error);
