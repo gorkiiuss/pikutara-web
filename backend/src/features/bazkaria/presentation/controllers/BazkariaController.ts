@@ -88,6 +88,14 @@ export class BazkariaController {
           <p>Konpartsakideari ordainketa egitea zailtzen bazaizu, edo bestelako arazoak badituzu, ez izan zalantzarik eta jarri gurekin harremanetan.</p>
           ${kontaktuKutxa}
         `;
+      } else if (ordainketaModua === 'ganetza_presentziala') {
+        ordainketaMezua = `
+          <p>Ordainketa <strong>Ganetzan presentzialki</strong> egitea hautatu duzu.</p>
+          <p>Azken orduko ordainketa egiteko, astelehenetik asteazkenera (Ekainak 15, 16 eta 17) Ganetzan egongo gara arratsaldeko <strong>17:00etatik 20:30era</strong>.</p>
+          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin: 15px 0; border: 1px solid #ddd;">
+            <p style="margin: 0;">📍 <strong>Ganetza:</strong> <a href="https://maps.app.goo.gl/5Ak6exkS6NBfTKBg9" style="color: #ff0000; text-decoration: none; font-weight: bold;">Ikusi Google Maps-en</a></p>
+          </div>
+        `;
       } else if (ordainketaModua === 'pikutara_zuzenean') {
         ordainketaMezua = `
           <p>Ordainketa nola egin adosteko gurekin (Pikutara) harremanetan jarriko zinela adierazi duzu.</p>

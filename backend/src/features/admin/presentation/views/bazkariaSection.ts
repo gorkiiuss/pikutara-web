@@ -53,9 +53,11 @@ export function renderBazkariaSection(bazkariRegistrations: AdminBazkariaRegistr
                     <td>
                       ${r.ordainketa_modua === 'aurretiaz'
                         ? '<span style="color: #00ffcc; font-weight: bold;">Aurretiaz</span><br><span style="font-size: 0.8rem; color: #aaa;">(Nori: ' + (r.konpartsakide_izena || 'Ezezaguna') + ')</span>'
-                        : r.ordainketa_modua === 'pikutara_zuzenean'
-                          ? '<span style="color: #ff00ff; font-weight: bold;">Pikutara</span>'
-                          : '<span style="color: #ffcc00; font-weight: bold;">Egunean bertan</span>'}
+                        : r.ordainketa_modua === 'ganetza_presentziala'
+                          ? '<span style="color: #ff9900; font-weight: bold;">🚨 Ganetzan</span>'
+                          : r.ordainketa_modua === 'pikutara_zuzenean'
+                            ? '<span style="color: #ff00ff; font-weight: bold;">Pikutara</span>'
+                            : '<span style="color: #ffcc00; font-weight: bold;">Egunean bertan</span>'}
                     </td>
                     <td>
                       ${r.is_paid === 1
