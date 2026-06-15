@@ -75,6 +75,28 @@ import ShareWidget from "../components/ShareWidget.astro";
             ziurtatu.
           </p>
 
+          <!-- ALERTA DE ULTIMA HORA (ALARMA) -->
+          <div class="emergency-alarm-banner">
+            <span class="alarm-icon">🚨</span>
+            <div class="alarm-content">
+              <h4>AZKEN ORDUKO ALARMA</h4>
+              <p>
+                Izen-ematea laster itxiko da! Ordainketa presenzialki egiteko,
+                astelehenetik asteazkenera (Ekainak 15, 16, 17) arratsaldeko <strong
+                  >17:00etatik 20:30era Ganetzan</strong
+                > egongo gara lanean.
+              </p>
+              <a
+                href="https://maps.app.goo.gl/5Ak6exkS6NBfTKBg9"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="alarm-link"
+              >
+                📍 Ganetza Google Maps-en kokatu
+              </a>
+            </div>
+          </div>
+
           <form id="bazkariaForm" class="bazkaria-form">
             <div class="form-row">
               <div class="form-group">
@@ -192,12 +214,28 @@ import ShareWidget from "../components/ShareWidget.astro";
               <label>Ordainketa modua</label>
 
               <div class="payment-options-container">
+                <label class="payment-radio-label emergency-radio">
+                  <input
+                    type="radio"
+                    name="ordainketaModua"
+                    value="ganetza_presentziala"
+                    checked
+                  />
+                  <div class="payment-radio-content">
+                    <span class="p-title" style="color: #ff9900;"
+                      >🚨 AZKEN ORDUKO AUKERA: Presentzialki Ganetzan</span
+                    >
+                    <span class="p-desc"
+                      >Astelehenetik asteazkenera (Ekainak 15, 16, 17)
+                      17:00-20:30 Ganetzan</span
+                    >
+                  </div>
+                </label>
                 <label class="payment-radio-label">
                   <input
                     type="radio"
                     name="ordainketaModua"
                     value="aurretiaz"
-                    checked
                   />
                   <div class="payment-radio-content">
                     <span class="p-title">Konpartsakide bati emanda</span>
@@ -248,7 +286,43 @@ import ShareWidget from "../components/ShareWidget.astro";
               </details>
             </div>
 
-            <div class="form-group" id="konpartsakideGroup">
+            <div class="form-group" id="ganetzaGroup" style="display: flex;">
+              <div
+                class="contact-card-box emergency-box"
+                style="border-color: #ff9900; background: rgba(255, 153, 0, 0.05);"
+              >
+                <div
+                  class="contact-header"
+                  style="border-bottom-color: rgba(255, 153, 0, 0.2);"
+                >
+                  <span class="contact-icon">📍</span>
+                  <strong style="color: #ff9900;">Ordainketa Ganetzan:</strong>
+                </div>
+                <p
+                  style="font-size: 0.95rem; line-height: 1.4; color: #fff; margin-bottom: 0.8rem;"
+                >
+                  Astelehenetik asteazkenera (Ekainak 15, 16 eta 17) Ganetzan
+                  egongo gara arratsaldeko <strong>17:00etatik 20:30era</strong> diru-bilketa
+                  egiten.
+                </p>
+                <div class="ganetza-maps-link">
+                  <a
+                    href="https://maps.app.goo.gl/5Ak6exkS6NBfTKBg9"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="maps-btn"
+                  >
+                    🗺️ Ikusi Ganetza Google Maps-en
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="form-group"
+              id="konpartsakideGroup"
+              style="display: none;"
+            >
               <label for="bKonpartsakide">Nori emango diozu dirua?</label>
               <div class="select-wrapper">
                 <select id="bKonpartsakide" class="pik-input select-input">
@@ -334,7 +408,8 @@ import ShareWidget from "../components/ShareWidget.astro";
                 > Bestela, jarri gurekin zuzenean kontaktuan <a
                   href="mailto:pikutaragaztekonpartsa@gmail.com"
                   style="color: var(--pik-primary); text-decoration: underline;"
-                  >pikutaragaztekonpartsa@gmail.com</a>
+                  >pikutaragaztekonpartsa@gmail.com</a
+                >
               </p>
 
               <div
@@ -387,6 +462,7 @@ import ShareWidget from "../components/ShareWidget.astro";
     "konpartsakideKontaktua",
   );
   const pikutaraGroup = document.getElementById("pikutaraGroup");
+  const ganetzaGroup = document.getElementById("ganetzaGroup");
 
   const kInstaRow = document.getElementById("kInstaRow");
   const kInstaText = document.getElementById("kInstaText");
@@ -441,6 +517,7 @@ import ShareWidget from "../components/ShareWidget.astro";
         // Hide all dynamic blocks first
         if (konpartsakideGroup) konpartsakideGroup.style.display = "none";
         if (pikutaraGroup) pikutaraGroup.style.display = "none";
+        if (ganetzaGroup) ganetzaGroup.style.display = "none";
         konpartsakideSelect.required = false;
 
         // Show the relevant block based on selection
@@ -449,12 +526,14 @@ import ShareWidget from "../components/ShareWidget.astro";
           konpartsakideSelect.required = true;
         } else if (target.value === "pikutara_zuzenean") {
           if (pikutaraGroup) pikutaraGroup.style.display = "flex";
+        } else if (target.value === "ganetza_presentziala") {
+          if (ganetzaGroup) ganetzaGroup.style.display = "flex";
         }
       });
     });
 
     // Initial setup
-    if (konpartsakideSelect) konpartsakideSelect.required = true;
+    if (konpartsakideSelect) konpartsakideSelect.required = false;
 
     // Handle Select change to show contact info split (Insta & Tel)
     if (konpartsakideSelect) {
@@ -613,7 +692,8 @@ import ShareWidget from "../components/ShareWidget.astro";
         if (konpartsakideKontaktua)
           konpartsakideKontaktua.style.display = "none";
         if (pikutaraGroup) pikutaraGroup.style.display = "none";
-        if (konpartsakideGroup) konpartsakideGroup.style.display = "flex"; // Reset to default view
+        if (konpartsakideGroup) konpartsakideGroup.style.display = "none";
+        if (ganetzaGroup) ganetzaGroup.style.display = "flex";
         successAlert.style.display = "none";
         bazkariaForm.style.display = "flex";
       });
@@ -1153,5 +1233,126 @@ import ShareWidget from "../components/ShareWidget.astro";
     .menu-options-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  /* Emergency alarm banner styles */
+  .emergency-alarm-banner {
+    display: flex;
+    gap: 1.2rem;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 51, 51, 0.15) 0%,
+      rgba(255, 153, 0, 0.1) 100%
+    );
+    border: 2px solid #ff3333;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
+    animation: pulseBorder 3s infinite alternate;
+  }
+
+  @keyframes pulseBorder {
+    0% {
+      border-color: #ff3333;
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.2);
+    }
+    100% {
+      border-color: #ff9900;
+      box-shadow: 0 0 25px rgba(255, 153, 0, 0.45);
+    }
+  }
+
+  .alarm-icon {
+    font-size: 2.2rem;
+    animation: wiggle 0.6s infinite alternate;
+    display: inline-block;
+  }
+
+  @keyframes wiggle {
+    0% {
+      transform: rotate(-12deg);
+    }
+    100% {
+      transform: rotate(12deg);
+    }
+  }
+
+  .alarm-content h4 {
+    color: #ff3333;
+    margin: 0 0 0.4rem 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(255, 51, 51, 0.2);
+  }
+
+  .alarm-content p {
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0 0 0.6rem 0;
+  }
+
+  .alarm-link {
+    display: inline-block;
+    color: #ffff00;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+
+  .alarm-link:hover {
+    color: #ffcc00;
+  }
+
+  /* Emergency radio payment option styling */
+  .emergency-radio .payment-radio-content {
+    border-color: rgba(255, 153, 0, 0.35);
+    background-color: rgba(255, 153, 0, 0.05);
+    animation: pulseBackground 3.5s infinite alternate;
+  }
+
+  @keyframes pulseBackground {
+    0% {
+      background-color: rgba(255, 153, 0, 0.05);
+      border-color: rgba(255, 153, 0, 0.35);
+    }
+    100% {
+      background-color: rgba(255, 51, 51, 0.08);
+      border-color: rgba(255, 51, 51, 0.5);
+    }
+  }
+
+  .emergency-radio input[type="radio"]:checked + .payment-radio-content {
+    border-color: #ff9900;
+    background-color: rgba(255, 153, 0, 0.18);
+    box-shadow: 0 0 15px rgba(255, 153, 0, 0.35);
+  }
+
+  .ganetza-maps-link {
+    margin-top: 0.5rem;
+  }
+
+  .maps-btn {
+    display: inline-block;
+    background-color: rgba(255, 153, 0, 0.15);
+    border: 1px solid #ff9900;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .maps-btn:hover {
+    background-color: #ff9900;
+    color: #000;
+    box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
+    transform: translateY(-1px);
   }
 </style>
