@@ -77,7 +77,10 @@ export function renderAdminLayout(data: AdminRenderData): string {
     window.adminSongs = ${JSON.stringify(allSongs)};
     window.adminHierarchyRaw = ${JSON.stringify(genreHierarchy)};
   </script>
-  <script src="/assets/admin/admin.js"></script>
+  <script src="/assets/admin/admin-common.js"></script>
+  <script src="/assets/admin/admin-songs.js"></script>
+  <script src="/assets/admin/admin-bazkaria.js"></script>
+  <script src="/assets/admin/admin-users.js"></script>
 </body>
 </html>
 `;
