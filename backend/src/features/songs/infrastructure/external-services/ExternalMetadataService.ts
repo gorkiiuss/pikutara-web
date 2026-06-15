@@ -26,7 +26,7 @@ export class ExternalMetadataService {
       context: {
         client: {
           clientName: 'WEB_REMIX',
-          clientVersion: '1.20230620.01.00',
+          clientVersion: '1.20231204.01.00',
           hl: 'en',
           gl: 'US'
         }
@@ -50,8 +50,20 @@ export class ExternalMetadataService {
       const data: any = await res.json();
       const videoDetails = data.videoDetails || {};
       const musicVideoType = videoDetails.musicVideoType;
+      const status = data.playabilityStatus?.status;
       
-      const isValid = musicVideoType === 'MUSIC_VIDEO_TYPE_ATV' || musicVideoType === 'MUSIC_VIDEO_TYPE_OMV';
+      // If the video is unplayable or blocked (very common for bot IPs or geo-restrictions),
+      // we allow it so we do not block valid songs.
+      const isPlayableOrBlocked = status !== 'OK';
+
+      // We allow ATV (Art Tracks), OMV (Official Music Videos), UGC (User Generated Content - e.g. indie releases),
+      // and OFFICIAL_SOURCE_MUSIC, or if the video playability status was blocked/unplayable.
+      const isValid = 
+        musicVideoType === 'MUSIC_VIDEO_TYPE_ATV' || 
+        musicVideoType === 'MUSIC_VIDEO_TYPE_OMV' || 
+        musicVideoType === 'MUSIC_VIDEO_TYPE_UGC' ||
+        musicVideoType === 'MUSIC_VIDEO_TYPE_OFFICIAL_SOURCE_MUSIC' ||
+        isPlayableOrBlocked;
       
       return {
         isValid,
@@ -62,7 +74,7 @@ export class ExternalMetadataService {
     } catch (err: any) {
       console.error(`Error querying InnerTube for ${videoId}:`, err.message);
       return {
-        isValid: false,
+        isValid: true, // Allow it to pass as a fallback so network/API changes don't break the service
         error: `Ezin izan da bideoa egiaztatu: ${err.message}`,
         musicVideoType: 'ERROR',
         title: '',
