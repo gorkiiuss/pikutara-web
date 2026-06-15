@@ -405,7 +405,23 @@ import PikutaraLayout from "../layouts/PikutaraLayout.astro";
     songForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const url = songUrlInput.value.trim();
+      let url = songUrlInput.value.trim();
+
+      // Clean YouTube watch link with playlist parameters (e.g. from Mix queues)
+      if (url.includes("youtube.com/watch") || url.includes("youtu.be/")) {
+        try {
+          const parsedUrl = new URL(url);
+          const hasVideoId = parsedUrl.searchParams.has("v") || (parsedUrl.hostname.includes("youtu.be") && parsedUrl.pathname.length > 1);
+          if (hasVideoId) {
+            parsedUrl.searchParams.delete("list");
+            parsedUrl.searchParams.delete("index");
+            url = parsedUrl.toString();
+          }
+        } catch (err) {
+          // Ignore parse errors
+        }
+      }
+
       urlError.style.display = "none";
 
       // 1. Check if playlist or album
