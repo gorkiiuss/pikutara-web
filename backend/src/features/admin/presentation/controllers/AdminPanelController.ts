@@ -7,7 +7,7 @@ import { renderAdminLayout } from '../views/adminLayout.js';
 import { 
   AdminMeme, AdminPoster, AdminPlaylistReview, AdminSection, 
   AdminPageView, AdminSong, AdminGarbageTag, AdminTagMapping, 
-  AdminGenreHierarchy, AdminUser 
+  AdminGenreHierarchy, AdminUser, AdminBazkariaRegistration
 } from '../../domain/models/AdminData.js';
 
 export class AdminPanelController {
@@ -24,7 +24,8 @@ export class AdminPanelController {
         garbageTags,
         tagMappings,
         genreHierarchy,
-        allUsers
+        allUsers,
+        bazkariRegistrations
       ] = await Promise.all([
         query('SELECT * FROM memes WHERE is_approved = 0 ORDER BY created_at DESC') as Promise<AdminMeme[]>,
         query('SELECT * FROM memes WHERE is_approved = 1 ORDER BY created_at DESC') as Promise<AdminMeme[]>,
@@ -36,7 +37,13 @@ export class AdminPanelController {
         query("SELECT tag FROM garbage_tags ORDER BY tag ASC") as Promise<AdminGarbageTag[]>,
         query("SELECT original_tag, canonical_tag FROM tag_mappings ORDER BY original_tag ASC") as Promise<AdminTagMapping[]>,
         query("SELECT genre, parent_genre FROM genre_hierarchy ORDER BY genre ASC") as Promise<AdminGenreHierarchy[]>,
-        query("SELECT id, username, role, created_at FROM users ORDER BY username ASC") as Promise<AdminUser[]>
+        query("SELECT id, username, role, created_at FROM users ORDER BY username ASC") as Promise<AdminUser[]>,
+        query(`
+          SELECT r.*, k.izena as konpartsakide_izena 
+          FROM bazkaria_registrations r 
+          LEFT JOIN konpartsakideak k ON r.konpartsakide_id = k.id 
+          ORDER BY r.created_at DESC
+        `) as Promise<AdminBazkariaRegistration[]>
       ]);
 
       const mappingsMap = new Map<string, string>();
@@ -66,7 +73,8 @@ export class AdminPanelController {
         garbageTags,
         tagMappings,
         genreHierarchy,
-        allUsers
+        allUsers,
+        bazkariRegistrations
       });
       
       res.send(html);
