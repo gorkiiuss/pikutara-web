@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   txartelari_ez:
     build: .
@@ -25,3 +23,17 @@ services:
       - ./backend/uploads:/app/uploads
       - ./backend/.env:/app/.env:ro
       - ./public:/public
+
+  downloader:
+    build: ./downloader
+    container_name: konpartsa_txartel_ez_downloader
+    volumes:
+      - ./downloads:/app/downloads
+      - ./backend/data:/app/data:ro
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://backend:3000/api/musika/songs
+      - DOWNLOAD_DIR=/app/downloads
+      - COOKIES_PATH=/app/data/cookies.txt
+    depends_on:
+      - backend

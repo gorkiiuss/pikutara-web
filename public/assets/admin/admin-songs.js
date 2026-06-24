@@ -1,10 +1,18 @@
 // Pikutara Admin Dashboard Client-side script - Songs, Rules and Direct Addition
-const adminSongs = window.adminSongs || [];
-const adminHierarchyRaw = window.adminHierarchyRaw || [];
-const adminHierarchy = {};
-adminHierarchyRaw.forEach(h => {
-  adminHierarchy[h.genre.trim().toLowerCase()] = h.parent_genre.trim();
-});
+// Reuse globally declared variables to avoid redeclaration SyntaxErrors
+if (typeof adminSongs === 'undefined') {
+  var adminSongs = window.adminSongs || [];
+}
+if (typeof adminHierarchyRaw === 'undefined') {
+  var adminHierarchyRaw = window.adminHierarchyRaw || [];
+}
+if (typeof adminHierarchy === 'undefined') {
+  var adminHierarchy = {};
+  adminHierarchyRaw.forEach(h => {
+    adminHierarchy[h.genre.trim().toLowerCase()] = h.parent_genre.trim();
+  });
+}
+
 
 async function songAction(id, status) {
   try {
