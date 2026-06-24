@@ -306,4 +306,89 @@ export class BazkariaController {
       res.status(500).json({ error: error.message || 'Errorea posta berriz bidaltzean.' });
     }
   }
+
+  static async sendBroadcastEmail(req: Request, res: Response): Promise<void> {
+    const { subject, driveUrl, message } = req.body;
+
+    if (!subject || !driveUrl || !message) {
+      res.status(400).json({ error: 'Faltan datos obligatorios (Gaia, Drive esteka eta Mezua beharrezkoak dira).' });
+      return;
+    }
+
+    try {
+      const registrations = await registrationRepo.findAll();
+      if (registrations.length === 0) {
+        res.status(400).json({ error: 'Ez dago izen-ematerik posta elektronikoak bidaltzeko.' });
+        return;
+      }
+
+      let successCount = 0;
+      let failedCount = 0;
+
+      const formattedMessage = message.replace(/\n/g, '<br>');
+
+      for (const reg of registrations) {
+        if (!reg.email) continue;
+
+        const emailHtml = `
+          <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background-color: #ffffff;">
+            <div style="background-color: #700070; padding: 20px; text-align: center;">
+              <h1 style="color: #fff; margin: 0; text-transform: uppercase; font-size: 1.6rem; letter-spacing: 0.05em;">Pikutara Gazte Konpartsa</h1>
+              <h2 style="color: #ffcc00; margin: 5px 0 0 0; font-size: 1.1rem; font-weight: normal;">Gazte Eguneko Bazkaria 🍽️</h2>
+            </div>
+            <div style="padding: 30px; line-height: 1.6;">
+              <p style="font-size: 1.1rem; margin-top: 0;">Kaixo <strong>${reg.izena}</strong>,</p>
+              
+              <div style="margin: 20px 0; font-size: 1rem; color: #333;">
+                ${formattedMessage}
+              </div>
+
+              <div style="text-align: center; margin: 35px 0;">
+                <a href="${driveUrl}" target="_blank" style="background: linear-gradient(135deg, #ff00ff, #700070); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(112, 0, 112, 0.35); text-transform: uppercase; letter-spacing: 0.05em;">
+                  📸 ARGAZKIAK IKUSI / VER FOTOS
+                </a>
+              </div>
+
+              <div style="background-color: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px solid #eee; margin-top: 20px; font-size: 0.9rem; word-break: break-all;">
+                <strong>Esteka (Enlace):</strong> <a href="${driveUrl}" style="color: #ff00ff; text-decoration: underline;">${driveUrl}</a>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+              
+              <p style="margin-bottom: 5px;">Eskerrik asko Gazte Egunean parte hartzeagatik!</p>
+              <p style="font-weight: bold; color: #ff0000; font-size: 1.1rem; margin-top: 0;">SESTAO ASTINTZERA!</p>
+            </div>
+          </div>
+        `;
+
+        const mailOptions = {
+          from: `"Pikutara Gazte Konpartsa" <${process.env.EMAIL_USER}>`,
+          to: reg.email,
+          subject: subject,
+          html: emailHtml
+        };
+
+        try {
+          await MailService.sendMail(mailOptions);
+          successCount++;
+        } catch (mailError) {
+          console.error(`Failed to send broadcast email to ${reg.email}:`, mailError);
+          failedCount++;
+        }
+
+        // Delay 100ms
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Difusioa osatu da.',
+        successCount,
+        failedCount
+      });
+    } catch (error: any) {
+      console.error('Errorea difusio mezuak bidaltzean:', error);
+      res.status(500).json({ error: 'Errorea difusio mezuak bidaltzean (Zerbitzari errorea).' });
+    }
+  }
 }

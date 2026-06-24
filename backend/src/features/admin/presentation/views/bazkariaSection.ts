@@ -17,6 +17,40 @@ export function renderBazkariaSection(bazkariRegistrations: AdminBazkariaRegistr
             </button>
           </div>
           
+          <!-- Broadcast Email Form -->
+          <div class="card" style="border: 1px solid rgba(255, 204, 0, 0.3); background: rgba(30, 8, 38, 0.85); margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+            <h3 style="color: #ffcc00; margin-top: 0; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;">
+              ✉️ Mezu Difusioa (Enviar correo masivo)
+            </h3>
+            <p style="font-size: 0.85rem; color: #ccc; margin-top: -10px; margin-bottom: 15px;">
+              Idatzi mezu bat eta itsatsi Google Driveko esteka bat bazkarian izena eman duten guztiei bidaltzeko (posta elektronikoz banan-banan bidaliko da).
+            </p>
+            
+            <form id="broadcast-email-form" onsubmit="sendBroadcastEmail(event)">
+              <div class="form-group">
+                <label for="broadcast-subject">Gaia / Asunto</label>
+                <input type="text" id="broadcast-subject" required placeholder="adib: Gazte Eguneko bazkariko argazkiak! 📸" value="Gazte Eguneko bazkariko argazkiak! 📸">
+              </div>
+              
+              <div class="form-group">
+                <label for="broadcast-drive">Google Drive Esteka / Enlace Google Drive</label>
+                <input type="url" id="broadcast-drive" required placeholder="https://drive.google.com/drive/folders/..." value="">
+              </div>
+              
+              <div class="form-group">
+                <label for="broadcast-message">Mezua / Mensaje</label>
+                <textarea id="broadcast-message" rows="5" required placeholder="Idatzi hemen bidali nahi duzun testua... (adib: Aupa! Hemen dituzue bazkariko argazkiak...)"></textarea>
+              </div>
+              
+              <div style="display: flex; gap: 12px; align-items: center; margin-top: 15px;">
+                <button type="submit" class="btn btn-submit" style="margin-top: 0; background: linear-gradient(135deg, #ff00ff, #700070); border: 1px solid #ff00ff; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);">
+                  Bidali Mezua Guztiei ✉️ (Enviar a todos)
+                </button>
+                <span id="broadcast-status" style="font-size: 0.9rem; color: #ffcc00; font-weight: bold; display: none;">Bidaltzen... ⏳</span>
+              </div>
+            </form>
+          </div>
+          
           <div class="table-scroll-wrapper">
             <table>
               <thead>

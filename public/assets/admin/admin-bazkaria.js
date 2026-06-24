@@ -88,3 +88,50 @@ async function exportBazkaria() {
     alert('Errorea esportatzean: ' + e.message);
   }
 }
+
+async function sendBroadcastEmail(event) {
+  event.preventDefault();
+  
+  const subject = document.getElementById('broadcast-subject').value;
+  const driveUrl = document.getElementById('broadcast-drive').value;
+  const message = document.getElementById('broadcast-message').value;
+  
+  // Count how many rows are in the table body, to tell the admin how many emails will be sent.
+  const rowCount = document.querySelectorAll('tr[id^="bazkaria-row-"]').length;
+  
+  if (!confirm(`Ziur zaude mezu hau izena eman duten ${rowCount} pertsonei bidali nahi diezula?\n(¿Estás seguro de enviar este correo a las ${rowCount} personas registradas?)`)) {
+    return;
+  }
+  
+  const statusSpan = document.getElementById('broadcast-status');
+  const submitBtn = event.target.querySelector('button[type="submit"]');
+  
+  statusSpan.style.display = 'inline';
+  statusSpan.innerText = 'Bidaltzen / Enviando... ⏳';
+  submitBtn.disabled = true;
+  
+  try {
+    const res = await fetch('/api/bazkaria/broadcast-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ subject, driveUrl, message })
+    });
+    
+    const data = await res.json();
+    if (res.ok) {
+      alert(`Difusioa ondo burutu da!\nBidaliak: ${data.successCount} | Huts eginak: ${data.failedCount}`);
+      document.getElementById('broadcast-message').value = '';
+      document.getElementById('broadcast-drive').value = '';
+    } else {
+      alert('Errorea mezuak bidaltzean: ' + (data.error || 'Errore ezezaguna'));
+    }
+  } catch (e) {
+    alert('Sareko errorea: ' + e.message);
+  } finally {
+    statusSpan.style.display = 'none';
+    submitBtn.disabled = false;
+  }
+}
+
